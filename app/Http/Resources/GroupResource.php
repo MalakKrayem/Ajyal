@@ -31,8 +31,8 @@ class GroupResource extends JsonResource
                     'name' => $this->category->title,
                 ],
                 'project' => [
-                    'id' => $this->store->id,
-                    'name' => $this->store->title,
+                    'id' => $this->project->id,
+                    'name' => $this->project->title,
                 ],
             ],
 
