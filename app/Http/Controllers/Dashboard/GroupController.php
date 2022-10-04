@@ -22,7 +22,7 @@ class GroupController extends Controller
         $groups = Group::filter($request->query())
                 ->with('category:id,title', 'project:id,title')
                 ->paginate();
-
+            //  dd($groups) ;
         return GroupResource::collection($groups);
 
 
