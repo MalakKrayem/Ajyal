@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Events;
+
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+
+class ProjectPartnerEvent
+{
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public $project;
+    public $partner;
+    /**
+     * Create a new event instance.
+     *
+     * @return void
+     */
+    public function __construct($project, $partner)
+    {
+        $this->project = $project;
+        $this->partner = $partner;
+    }
+
+
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return \Illuminate\Broadcasting\Channel|array
+     */
+    public function broadcastOn()
+    {
+        return new PrivateChannel('channel-name');
+    }
+}

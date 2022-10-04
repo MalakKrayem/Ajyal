@@ -28,4 +28,8 @@ class Student extends Authenticatable
 
         return asset('storage/' . $this->image);
     }
+
+    public function groups(){
+        return $this->belongsToMany(Group::class,'student_group','student_id','group_id');
+    }
 }

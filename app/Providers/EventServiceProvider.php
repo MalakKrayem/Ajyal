@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\ProjectPartnerEvent;
+use App\Events\StudentGroupEvent;
+use App\Listeners\ProjectPartnerRelation;
+use App\Listeners\StudentGroupRelation;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,6 +22,13 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        ProjectPartnerEvent::class => [
+            ProjectPartnerRelation::class,
+        ],
+        StudentGroupEvent::class=>[
+            StudentGroupRelation::class,
+        ]
+
     ];
 
     /**

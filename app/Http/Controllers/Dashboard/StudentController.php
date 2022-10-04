@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Events\StudentGroupEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StudentRequest;
 use App\Http\Resources\StudentResource;
@@ -52,10 +53,12 @@ class StudentController extends Controller
         $student->status=$request->input("status");
         $student->phone=$request->input("phone");
         $student->transport=$request->input('transport');
+        $student->gender=$request->input('gender');
         if(isset($data["image_path"])){
             $student->image=$data["image_path"];
         }
         $student->save();
+        event(new StudentGroupEvent($student->id,$request->input("group_id")));
         return $this->apiResponse(new StudentResource($student),'Student Created Successfully',Response::HTTP_CREATED);
     }
 
@@ -94,6 +97,7 @@ class StudentController extends Controller
         $student->status=$request->input("status");
         $student->phone=$request->input("phone");
         $student->transport=$request->input('transport');
+        $student->gender=$request->input('gender');
         if(isset($data["image_path"])){
             $student->image=$data["image_path"];
         }
