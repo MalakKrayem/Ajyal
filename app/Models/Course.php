@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
 
-class Group extends Model
+class Course extends Model
 {
     use  HasFactory, Notifiable,SoftDeletes;
 
@@ -19,7 +19,7 @@ class Group extends Model
         'description',
         'image',
         'category_id',
-        'project_id',
+        'mentor_id',
         'budget',
         'hour_count',
         'participants_count',
@@ -36,20 +36,15 @@ class Group extends Model
     protected $appends = [
         'image_url',
     ];
-    public function category()
+    public function group()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        return $this->belongsTo(Group::class, 'group_id', 'id');
     }
 
-    public function project()
-    {
-        return $this->belongsTo(Project::class, 'project_id', 'id');
-    }
-
-    public function courses()
-    {
-        return $this->hasMany(Course::class, 'group_id', 'id');
-    }
+    // public function mentor()
+    // {
+    //     return $this->belongsTo(Mentor::class, 'mentor_id', 'id');
+    // }
 
     public function scopeDraft(Builder $builder)
     {
@@ -69,17 +64,17 @@ class Group extends Model
     public function scopeFilter(Builder $builder, $filters)
     {
         $options = array_merge([
-            'project_id' => null,
-            'category_id' => null,
+            'group_id' => null,
+           // 'mentor_id' => null,
             'status' => 'draft',
         ], $filters);
 
-        $builder->when($options['project_id'], function($builder, $value) {
-            $builder->where('project_id', $value);
+        $builder->when($options['group_id'], function($builder, $value) {
+            $builder->where('group_id', $value);
         });
-        $builder->when($options['category_id'], function($builder, $value) {
-            $builder->where('category_id', $value);
-        });
+        // $builder->when($options['mentor_id'], function($builder, $value) {
+        //     $builder->where('mentor_id', $value);
+        // });
         $builder->when($options['status'], function ($query, $status) {
             return $query->where('status', $status);
         });
