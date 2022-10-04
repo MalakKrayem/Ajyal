@@ -34,9 +34,9 @@ class AccessTokenController extends Controller
                 $token=$user->createToken($device_name)->plainTextToken;
                 return $this->apiResponse(['token'=>$token, 'user'=>$user],"Ok",200);
             }
-            return $this->apiResponse(null,"Password is incorrect!",400);
         }
-        return $this->apiResponse(null,"User not found!",404);
+        // Credentials are incorrect
+        return $this->apiResponse(null,"Credentials are incorrect",404);
     }
 
     // To delete token

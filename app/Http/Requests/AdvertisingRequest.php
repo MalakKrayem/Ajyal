@@ -21,7 +21,7 @@ class AdvertisingRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public static function rules()
     {
         return [
             'title' => 'required|string|max:255',

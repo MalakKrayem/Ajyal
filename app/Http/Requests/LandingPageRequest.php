@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PartnerRequest extends FormRequest
+class LandingPageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,8 @@ class PartnerRequest extends FormRequest
     public static function rules()
     {
         return [
-            'name' => 'required|string',
-            'description' => 'string|max:255',
-            'logo' => 'required',
+            'key' => 'required|string',
+            'value' => 'required|string',
         ];
     }
 }
