@@ -15,7 +15,7 @@ class Group extends Model
     use  HasFactory, Notifiable,SoftDeletes;
 
     protected $fillable = [
-        'name',
+        'title',
         'description',
         'image',
         'category_id',
@@ -43,7 +43,12 @@ class Group extends Model
 
     public function project()
     {
-        return $this->belongsTo(Store::class, 'project_id', 'id');
+        return $this->belongsTo(Project::class, 'project_id', 'id');
+    }
+
+    public function courses()
+    {
+        return $this->hasMany(Course::class, 'group_id', 'id');
     }
 
     public function scopeDraft(Builder $builder)
