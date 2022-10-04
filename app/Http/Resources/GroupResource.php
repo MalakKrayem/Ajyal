@@ -35,6 +35,6 @@ class GroupResource extends JsonResource
                     'name' => $this->project->title,
                 ],
             ],
-
-        ];    }
+        ];
+    }
 }

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+    use ApiResponseTrait;
      /**
      * Display a listing of the resource.
      *
@@ -52,7 +53,7 @@ class ProjectController extends Controller
         $project->start_date = $request->input("start_date");
         $project->end_date = $request->input("end_date");
         if(isset($data["image_path"])){
-            $project->image_path = $data["image_path"];
+            $project->image = $data["image_path"];
         }
         $project->save();
         if($project){

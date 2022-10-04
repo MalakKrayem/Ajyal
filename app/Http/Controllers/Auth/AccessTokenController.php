@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Dashboard\ApiResponseTrait;
 use App\Models\Mentor;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,8 +26,12 @@ class AccessTokenController extends Controller
 
         if($guard == 'admin'){
             $user= User::where('email',$request->input('email'))->first();
-        }else if($guard == 'mentor'){
+        }
+        if($guard == 'mentor'){
             $user= Mentor::where('email',$request->input('email'))->first();
+        }
+        if($guard == 'student'){
+            $user= Student::where('email',$request->input('email'))->first();
         }
         if($user){
             if(Hash::check($request->input('password'),$user->password)){
