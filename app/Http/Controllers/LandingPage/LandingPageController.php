@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Dashboard\ApiResponseTrait;
 use App\Http\Requests\LandingPageRequest;
 use App\Http\Resources\LandingPageResource;
+use App\Models\Activity;
 use App\Models\Advertising;
 use App\Models\Group;
 use App\Models\LandingPage;
@@ -23,12 +24,14 @@ class LandingPageController extends Controller
         $partners=Partner::all();
         $groups=Group::all();
         $members=User::all();
+        $activites=Activity::all();
         return $this->apiResponse([
             'pageContent'=>$landingPage,
             'advertisings'=>$advertisings,
             'partners'=>$partners,
             'groups'=>$groups,
-            'members'=>$members
+            'members'=>$members,
+            'activites'=>$activites
         ],'Done',200);
     }
 
