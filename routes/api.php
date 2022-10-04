@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\AccessTokenController;
+use App\Http\Controllers\Dashboard\ActivitiesTypeController;
+use App\Http\Controllers\Dashboard\ActivityController;
 use App\Http\Controllers\Dashboard\AdvertisingController;
 use App\Http\Controllers\Dashboard\CategoriesController;
 use App\Http\Controllers\Dashboard\GroupController;
@@ -43,5 +45,9 @@ Route::middleware('auth:sanctum')->prefix('dashboard')->group(function(){
     Route::apiResource('platforms', PlatformController::class);
     Route::apiResource('partners', PartnerController::class);
     Route::apiResource('advertisings', AdvertisingController::class);
+    Route::apiResource('activities-types', ActivitiesTypeController::class);
+    Route::apiResource('activites',ActivityController::class);
+    Route::apiResource('groups', GroupController::class);
+    Route::apiResource('projects', ProjectController::class);
 
 });

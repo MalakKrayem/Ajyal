@@ -7,7 +7,10 @@ use App\Http\Controllers\Dashboard\ApiResponseTrait;
 use App\Http\Requests\LandingPageRequest;
 use App\Http\Resources\LandingPageResource;
 use App\Models\Advertising;
+use App\Models\Group;
 use App\Models\LandingPage;
+use App\Models\Partner;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class LandingPageController extends Controller
@@ -17,7 +20,16 @@ class LandingPageController extends Controller
     public function index(){
         $landingPage = LandingPageResource::collection(LandingPage::all());
         $advertisings=Advertising::published()->get();
-        return $this->apiResponse(['pageContent'=>$landingPage,'advertisings'=>$advertisings],'Done',200);
+        $partners=Partner::all();
+        $groups=Group::all();
+        $members=User::all();
+        return $this->apiResponse([
+            'pageContent'=>$landingPage,
+            'advertisings'=>$advertisings,
+            'partners'=>$partners,
+            'groups'=>$groups,
+            'members'=>$members
+        ],'Done',200);
     }
 
     public function store(Request $request)
