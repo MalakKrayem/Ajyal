@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Mentor;
 use Illuminate\Foundation\Http\FormRequest;
 
 class MentorRequest extends FormRequest
@@ -21,15 +22,15 @@ class MentorRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public static function rules()
     {
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:mentors',
+            'email' => "required|email|unique:mentors,email",
             'password' => 'required|string|min:8|max:15',
             'gender'=>'required|string|in:female,male',
-            'phone'=>'numeric',
+            'phone'=>'required|numeric',
             'image'=>'mimes:jpg,png',
             'overview' => 'string|max:255',
         ];

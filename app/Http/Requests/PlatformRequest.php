@@ -21,7 +21,7 @@ class PlatformRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public static function rules()
     {
         return [
             'name'=>'required|string',

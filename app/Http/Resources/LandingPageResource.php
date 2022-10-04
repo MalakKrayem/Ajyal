@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PlatformResource extends JsonResource
+class LandingPageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +15,8 @@ class PlatformResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'jobs_count' => $this->jobs_count,
-            'image' => $this->image,
+            'key' => $this->key,
+            'value' => $this->value,
         ];
     }
 }

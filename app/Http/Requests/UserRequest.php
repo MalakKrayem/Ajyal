@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -21,18 +22,18 @@ class UserRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public static function rules()
     {
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => "required|email|unique:users,email",
             'password' => 'required|string|min:8|max:15',
             'gender'=>'required|string|in:female,male',
             'image'=>'mimes:jpg,png',
-            'phone'=>'numeric',
+            'phone'=>'required|numeric',
             'overview' => 'string|max:255',
-            'position_description'=>'string|max:255'
+            'position_description'=>'required|string|max:255'
         ];
     }
 }

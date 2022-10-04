@@ -44,7 +44,7 @@ class PlatformController extends Controller
         }
         $platform= new Platform();
         $platform->name = $request->input("name");
-        $platform->job_count = $request->input("job_count");
+        $platform->jobs_count = $request->input("jobs_count");
         if(isset($data["image_path"])){
             $platform->image = $data["image_path"];
         }
@@ -89,7 +89,7 @@ class PlatformController extends Controller
             $data["image_path"] = $path;
         }
         $platform->name = $request->input("name");
-        $platform->job_count = $request->input("job_count");
+        $platform->jobs_count = $request->input("jobs_count");
         if(isset($data["image_path"])){
             $platform->image = $data["image_path"];
         }
