@@ -8,9 +8,11 @@ use App\Http\Resources\GroupResource;
 use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PHPUnit\Framework\MockObject\Api;
 
 class GroupController extends Controller
 {
+    use ApiResponseTrait;
     /**
      * Display a listing of the resource.
      *
@@ -18,11 +20,11 @@ class GroupController extends Controller
      */
     public function index(Request $request)
     {
-
-        $groups = Group::filter($request->query())
-                ->with('category:id,title', 'project:id,title')
-                ->paginate();
-            //  dd($groups) ;
+        $groups = GroupResource::collection(Group::all());
+        // $groups = Group::filter($request->query())
+        //         ->with('category:id,title', 'project:id,title')
+        //         ->paginate();
+        //     //  dd($groups) ;
         return GroupResource::collection($groups);
 
 

@@ -27,7 +27,6 @@ return new class extends Migration
             $table->string('end_date')->nullable();
             $table->enum('status', ['draft', 'completed', 'ongoing'])->default('draft');
             $table->softDeletes();
-
             $table->timestamps();
           });
     }
