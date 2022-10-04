@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AccessTokenController;
 use App\Http\Controllers\Dashboard\AdvertisingController;
 use App\Http\Controllers\Dashboard\CategoriesController;
+use App\Http\Controllers\Dashboard\CourseController;
 use App\Http\Controllers\Dashboard\GroupController;
 use App\Http\Controllers\Dashboard\MentorController;
 use App\Http\Controllers\Dashboard\PartnerController;
@@ -27,9 +28,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::apiResource('categories', CategoriesController::class);
-Route::apiResource('groups', GroupController::class);
-Route::apiResource('projects', ProjectController::class);
+
+
+
 
 Route::post('auth/{guard}/access-token', [AccessTokenController::class, 'store'])->middleware('guest:sanctum');
 
@@ -43,5 +44,7 @@ Route::middleware('auth:sanctum')->prefix('dashboard')->group(function(){
     Route::apiResource('platforms', PlatformController::class);
     Route::apiResource('partners', PartnerController::class);
     Route::apiResource('advertisings', AdvertisingController::class);
+    Route::apiResource('categories', CategoriesController::class);
+    Route::apiResource('courses', CourseController::class);
 
 });

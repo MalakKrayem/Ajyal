@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class GroupResource extends JsonResource
+class CourseResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -26,15 +26,17 @@ class GroupResource extends JsonResource
             'start_date'=>$this->start_date,
             'end_date'=>$this->end_date,
             'relations' => [
-                'category' => [
-                    'id' => $this->category->id,
-                    'name' => $this->category->title,
-                ],
+
                 'project' => [
                     'id' => $this->project->id,
                     'name' => $this->project->title,
                 ],
+                'mentor' => [
+                    'id' => $this->mentor->id,
+                    'name' => $this->mentor->title,
+                ],
             ],
 
-        ];    }
+        ];
+        }
 }

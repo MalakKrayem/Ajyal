@@ -30,6 +30,10 @@ class Project extends Model
     {
         $builder->where('status', '=', 'draft');
     }
+    public function gruops()
+    {
+        return $this->hasMany(Group::class, 'project_id', 'id');
+    }
 
     public function getImageUrlAttribute()
     {
