@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class ProjectPartner extends Pivot
+class StudentGroup extends Pivot
 {
     use HasFactory;
-    protected $table = 'project_partner';
-    protected $fillable = ['project_id','partner_id'];
+    protected $table = 'student_group';
+    protected $fillable = ['group_id','student_id'];
+
 
 }

@@ -26,6 +26,7 @@ class StudentResource extends JsonResource
             'status' => $this->status,
             'total_income' => $this->total_income,
             'total_jobs' => $this->total_jobs,
+            'gender'=>$this->gender
         ];
     }
 }

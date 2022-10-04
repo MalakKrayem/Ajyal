@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Events\ProjectPartnerEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PartnerRequest;
 use App\Http\Resources\PartnerResource;
@@ -50,6 +51,7 @@ class PartnerController extends Controller
             $partner->logo = $data["image_path"];
         }
         $partner->save();
+        event(new ProjectPartnerEvent($request->input("project_id"),$partner->id));
         if($partner){
             return $this->apiResponse(new PartnerResource($partner),'Partner added successfully!',Response::HTTP_CREATED);
         }

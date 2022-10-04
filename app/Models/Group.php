@@ -83,9 +83,10 @@ class Group extends Model
         $builder->when($options['status'], function ($query, $status) {
             return $query->where('status', $status);
         });
-
-
-
     }
+    public function students()
+        {
+            return $this->belongsToMany(Student::class, 'student_group', 'group_id', 'student_id');
+        }
 
 }
