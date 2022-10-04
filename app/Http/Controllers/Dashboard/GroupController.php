@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
+    use ApiResponseTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -18,12 +20,13 @@ class GroupController extends Controller
      */
     public function index(Request $request)
     {
+        // $groups = Group::filter($request->query())
+        // ->with('project:id,title','category:id,title')
+        // ->paginate();
 
-        $groups = Group::filter($request->query())
-                ->with('category:id,title', 'project:id,title')
-                ->paginate();
-            //  dd($groups) ;
-        return GroupResource::collection($groups);
+        //  return GroupResource::collection($groups);
+
+         return GroupResource::collection(Group::all());
 
 
     }

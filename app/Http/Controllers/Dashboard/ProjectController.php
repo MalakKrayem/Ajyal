@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
+use App\Http\Controllers\Dashboard;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+    use ApiResponseTrait;
+
      /**
      * Display a listing of the resource.
      *
@@ -54,7 +57,7 @@ class ProjectController extends Controller
         if(isset($data["image_path"])){
             $project->image_path = $data["image_path"];
         }
-        $project->save();
+        $project->update();
         if($project){
             return $this->apiResponse($project,"The project saved!",201);
         }

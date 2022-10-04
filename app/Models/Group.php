@@ -51,10 +51,10 @@ class Group extends Model
         return $this->hasMany(Course::class, 'group_id', 'id');
     }
 
-    public function scopeDraft(Builder $builder)
-    {
-        $builder->where('status', '=', 'draft');
-    }
+    // public function scopeDraft(Builder $builder)
+    // {
+    //     $builder->where('status', '=', 'draft');
+    // }
     public function getImageUrlAttribute()
     {
         if (!$this->image) {

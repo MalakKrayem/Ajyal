@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Dashboard;
-
+use App\Http\Controllers\Dashboard\ApiResponseTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CourseRequest;
 use App\Http\Resources\CourseResource;
@@ -11,6 +11,8 @@ use Illuminate\Http\Response;
 
 class CourseController extends Controller
 {
+    use ApiResponseTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -18,11 +20,11 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-        $groups = Course::filter($request->query())
-        ->with('group:id,title')
+        $courses = Course::filter($request->query())
+        ->with('group:id,title','mentor:id,first_name')
         ->paginate();
 
-         return CourseResource::collection($groups);
+         return CourseResource::collection($courses);
 
     }
 
@@ -52,7 +54,7 @@ class CourseController extends Controller
             $data["image_path"] = $path;
         }
         if($validator->fails()){
-            return $this->apiResponse(null,$validator->errors(),Response::HTTP_BAD_REQUEST);
+            return $this->apiResponse(null,$validator->errors(),400);
 
         }
         $course = new Course();
@@ -71,9 +73,10 @@ class CourseController extends Controller
         }
         $course->save();
         if($course){
-            return $this->apiResponse($course,"The Course saved!",Response::HTTP_CREATED);
+
+            return $this->apiResponse($course,"The Course saved!",201);
         }
-            return $this->apiResponse(null,"The Course not saved!",404);
+        return $this->apiResponse(null,"The Course not saved!",404);
 
 
     }
@@ -84,12 +87,12 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show( Course $course)
+    public function show(Course $course)
     {
         return new CourseResource($course);
 
         return $course
-            ->load('group:id,title');
+            ->load('group:id,title','mentor:id,first_name');
     }
 
     /**

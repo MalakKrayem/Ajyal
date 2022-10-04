@@ -27,13 +27,13 @@ class CourseResource extends JsonResource
             'end_date'=>$this->end_date,
             'relations' => [
 
-                'project' => [
-                    'id' => $this->project->id,
-                    'name' => $this->project->title,
+                'group' => [
+                    'id' => $this->group->id,
+                    'name' => $this->group->title,
                 ],
                 'mentor' => [
                     'id' => $this->mentor->id,
-                    'name' => $this->mentor->title,
+                    'name' => $this->mentor->first_name,
                 ],
             ],
 

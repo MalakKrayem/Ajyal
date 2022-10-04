@@ -24,8 +24,8 @@ class CourseRequest extends FormRequest
     public static function rules()
     {
         return [
-            'category_id'=>'required|integer|exists:categories,id',
-            'mentor_id'=>'integer|exists:mentors,id',
+            'group_id'=>'required|integer|exists:groups,id',
+            'mentor_id'=>'required|integer|exists:mentors,id',
             'title' => 'required|string|max:100',
             'description' => 'required|string|max:255',
             'budget'=>'numeric',
