@@ -20,13 +20,10 @@ return new class extends Migration
             $table->string("title");
             $table->string("description")->nullable();
             $table->string('image')->nullable();
-            $table->float('budget')->nullable();
-            $table->integer('participants_count')->default(0);
             $table->integer('hour_count')->default(0);
             $table->string('start_date')->nullable();
             $table->string('end_date')->nullable();
             $table->enum('status', ['draft', 'completed', 'ongoing'])->default('draft');
-
             $table->timestamps();
             $table->softDeletes();
         });

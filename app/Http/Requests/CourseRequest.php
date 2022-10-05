@@ -24,7 +24,7 @@ class CourseRequest extends FormRequest
     public static function rules()
     {
         return [
-            'category_id'=>'required|integer|exists:categories,id',
+            'group_id'=>'required|integer|exists:groups,id',
             'mentor_id'=>'integer|exists:mentors,id',
             'title' => 'required|string|max:100',
             'description' => 'required|string|max:255',
@@ -33,7 +33,7 @@ class CourseRequest extends FormRequest
             'hour_count'=>'integer',
             'start_date'=>'string',
             'end_date'=>'string',
-            'status'=>'string|in,draft,completed,ongoing',
+            'status'=>'string|in:draft,completed,ongoing',
 
 
         ];

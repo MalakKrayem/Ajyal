@@ -11,6 +11,7 @@ use App\Http\Controllers\Dashboard\MentorController;
 use App\Http\Controllers\Dashboard\PartnerController;
 use App\Http\Controllers\Dashboard\PlatformController;
 use App\Http\Controllers\Dashboard\ProjectController;
+use App\Http\Controllers\Dashboard\RateController;
 use App\Http\Controllers\Dashboard\StudentController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\LandingPage\LandingPageController;
@@ -50,4 +51,5 @@ Route::middleware('auth:sanctum')->prefix('dashboard')->group(function(){
     Route::apiResource('categories', CategoriesController::class);
     Route::apiResource('courses', CourseController::class);
     Route::apiResource('students', StudentController::class);
+    Route::apiResource('rates', RateController::class);
 });
