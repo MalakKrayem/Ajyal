@@ -51,7 +51,9 @@ class PartnerController extends Controller
             $partner->logo = $data["image_path"];
         }
         $partner->save();
+
         event(new ProjectPartnerEvent($request->input("project_id"),$partner->id));
+
         if($partner){
             return $this->apiResponse(new PartnerResource($partner),'Partner added successfully!',Response::HTTP_CREATED);
         }
@@ -66,10 +68,8 @@ class PartnerController extends Controller
      */
     public function show(Partner $partner)
     {
-        if($partner){
-            return $this->apiResponse(new PartnerResource($partner),'Done',Response::HTTP_OK);
-        }
-        return $this->apiResponse(null,'Not found!',Response::HTTP_NOT_FOUND);
+        return $this->apiResponse(new PartnerResource($partner),'Done',Response::HTTP_OK);
+
     }
 
     /**
@@ -81,9 +81,6 @@ class PartnerController extends Controller
      */
     public function update(Request $request, Partner $partner)
     {
-        if(!$partner){
-            return $this->apiResponse(null,'Not found!',Response::HTTP_NOT_FOUND);
-        }
         $request->validate(PartnerRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
@@ -96,7 +93,11 @@ class PartnerController extends Controller
         if(isset($data["image_path"])){
             $partner->logo = $data["image_path"];
         }
+
         $partner->save();
+
+        event(new ProjectPartnerEvent($request->input("project_id"),$partner->id));
+
         if($partner){
             return $this->apiResponse(new PartnerResource($partner),'Partner updated successfully!',Response::HTTP_OK);
         }
@@ -111,13 +112,6 @@ class PartnerController extends Controller
      */
     public function destroy(Partner $partner)
     {
-        if(!$partner){
-            return $this->apiResponse(null,"Not Found!",Response::HTTP_NOT_FOUND);
-        }
-
-        if($partner->logo) {
-            Storage::disk("public")->delete($partner->image);
-        }
         $partner->delete();
         return $this->apiResponse(new PartnerResource($partner),"The partner deleted sucessfuly!",Response::HTTP_OK);
     }

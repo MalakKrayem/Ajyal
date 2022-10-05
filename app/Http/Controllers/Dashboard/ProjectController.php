@@ -22,7 +22,10 @@ class ProjectController extends Controller
         ->orderBy('projects.title')
         ->paginate();
 
-        return ProjectResource::collection($projects);
+        if($projects->isEmpty()){
+            return $this->apiResponse(null, 'No projects found', 404);
+        }
+        return $this->apiResponse(ProjectResource::collection($projects),'Done',200);
     }
 
 
@@ -101,7 +104,7 @@ class ProjectController extends Controller
         $project->end_date = $request->input("end_date");
         $project->status = $request->input("status");
         if(isset($data["image_path"])){
-            $project->image_path = $data["image_path"];
+            $project->image = $data["image_path"];
         }
         $project->save();
         if($project){
@@ -117,11 +120,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        if($project){
-            $project->delete();
-            return $this->apiResponse(null,"The project deleted sucessfuly!",200);
-        }else{
-            return 'not found';
-        }
+        $project->delete();
+        return $this->apiResponse($project,"The project deleted sucessfuly!",200);
+
     }
 }

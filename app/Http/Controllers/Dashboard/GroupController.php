@@ -21,31 +21,12 @@ class GroupController extends Controller
     public function index(Request $request)
     {
         $groups = GroupResource::collection(Group::all());
-        // $groups = Group::filter($request->query())
-        //         ->with('category:id,title', 'project:id,title')
-        //         ->paginate();
-        //     //  dd($groups) ;
-        return GroupResource::collection($groups);
-
-
+        if($groups->isEmpty()){
+            return $this->apiResponse(null, 'No Groups Found', 404);
+        }
+        return $this->apiResponse($groups, 'Done', 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validator=Validator($request->all(),GroupRequest::rules());
@@ -70,7 +51,7 @@ class GroupController extends Controller
         $group->category_id = $request->input("category_id");
         $group->project_id = $request->input("project_id");
         if(isset($data["image_path"])){
-            $group->image_path = $data["image_path"];
+            $group->image = $data["image_path"];
         }
         $group->save();
         if($group){
@@ -87,21 +68,7 @@ class GroupController extends Controller
      */
     public function show(Group $group)
     {
-        return new GroupResource($group);
-
-        return $group
-            ->load('category:id,title', 'project:id,title');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return $this->apiResponse($group, 'Done', 200);
     }
 
     /**
@@ -123,7 +90,6 @@ class GroupController extends Controller
         if($validator->fails()){
             return $this->apiResponse(null,$validator->errors(),400);
         }
-        $group = new Group();
         $group->title = $request->input("title");
         $group->description = $request->input("description");
         $group->budget = $request->input("budget");
@@ -135,7 +101,7 @@ class GroupController extends Controller
         $group->category_id = $request->input("category_id");
         $group->project_id = $request->input("project_id");
         if(isset($data["image_path"])){
-            $group->image_path = $data["image_path"];
+            $group->image = $data["image_path"];
         }
         $group->update();
         if($group){
@@ -152,23 +118,7 @@ class GroupController extends Controller
      */
     public function destroy(Group $group)
     {
-
-        if($group){
-            $group->delete();
-            return $this->apiResponse(null,"The group deleted sucessfuly!",200);
-        }else{
-            return 'not found';
-        }
-        // $user = Auth::guard('sanctum')->user();
-        // if (!$user->tokenCan('groups.delete')) {
-        //     return response([
-        //         'message' => 'Not allowed'
-        //     ], 403);
-        // }
-
-        // Group::destroy($id);
-        // return [
-        //     'message' => 'Group deleted successfully',
-        // ];
+        $group->delete();
+        return $this->apiResponse($group,"The group deleted sucessfuly!",200);
     }
 }

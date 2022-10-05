@@ -68,10 +68,8 @@ class AdvertisingController extends Controller
      */
     public function show(Advertising $advertising)
     {
-        if($advertising){
-            return $this->apiResponse(new AdvertisingResource($advertising),'Done',Response::HTTP_OK);
-        }
-        return $this->apiResponse(null,'Not Found!',Response::HTTP_NOT_FOUND);
+        return $this->apiResponse(new AdvertisingResource($advertising),'Done',Response::HTTP_OK);
+
     }
 
     /**
@@ -83,9 +81,6 @@ class AdvertisingController extends Controller
      */
     public function update(Request $request, Advertising $advertising)
     {
-        if(!$advertising){
-            return $this->apiResponse(null,'Not Found!',Response::HTTP_NOT_FOUND);
-        }
         $request->validate(AdvertisingRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
@@ -116,13 +111,6 @@ class AdvertisingController extends Controller
      */
     public function destroy(Advertising $advertising)
     {
-        if(!$advertising){
-            return $this->apiResponse(null,"Not Found!",Response::HTTP_NOT_FOUND);
-        }
-
-        if($advertising->image) {
-            Storage::disk("public")->delete($advertising->image);
-        }
         $advertising->delete();
         return $this->apiResponse(new AdvertisingResource($advertising),"The advertising deleted sucessfuly!",200);
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\LandingPage;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Dashboard\ApiResponseTrait;
 use App\Http\Requests\LandingPageRequest;
+use App\Http\Resources\GroupLandingResource;
 use App\Http\Resources\LandingPageResource;
 use App\Models\Activity;
 use App\Models\Advertising;
@@ -22,16 +23,18 @@ class LandingPageController extends Controller
         $landingPage = LandingPageResource::collection(LandingPage::all());
         $advertisings=Advertising::published()->get();
         $partners=Partner::all();
-        $groups=Group::all();
         $members=User::all();
         $activites=Activity::all();
+        $traning_statistic=GroupLandingResource::collection(Group::all());
+        $groups=Group::all();
         return $this->apiResponse([
             'pageContent'=>$landingPage,
             'advertisings'=>$advertisings,
             'partners'=>$partners,
-            'groups'=>$groups,
+            'traning_statistic'=>$traning_statistic,
             'members'=>$members,
-            'activites'=>$activites
+            'activites'=>$activites,
+            'groups'=>$groups
         ],'Done',200);
     }
 
@@ -39,12 +42,12 @@ class LandingPageController extends Controller
     {
         $request->validate(LandingPageRequest::rules());
         //edit
-        $section = LandingPage::where('key', $request->key)->first();
-        if($section){
-            $section->update($request->all());
-            return $this->apiResponse(new LandingPageResource($section),'Done',200);
-        }
-        $landingPage = LandingPage::updateOrCreate($request->all());
+        // $section = LandingPage::where('key', $request->key)->first();
+        // if($section){
+        //     $section->update($request->all());
+        //     return $this->apiResponse(new LandingPageResource($section),'Done',200);
+        // }
+        $landingPage = LandingPage::updateOrCreate(['key' => $request->key], $request->all());
         $landingPage->save();
         return $this->apiResponse(new LandingPageResource($landingPage), 'Done', 201);
     }
