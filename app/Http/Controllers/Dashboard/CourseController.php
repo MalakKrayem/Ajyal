@@ -11,6 +11,7 @@ use Illuminate\Http\Response;
 
 class CourseController extends Controller
 {
+    use ApiResponseTrait;
     /**
      * Display a listing of the resource.
      *
@@ -18,22 +19,8 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-        $groups = Course::filter($request->query())
-        ->with('group:id,title')
-        ->paginate();
-
-         return CourseResource::collection($groups);
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $groups = Course::all();
+        return $this->apiResponse(CourseResource::collection($groups),'Done',200);
     }
 
     /**
@@ -58,16 +45,14 @@ class CourseController extends Controller
         $course = new Course();
         $course->title = $request->input("title");
         $course->description = $request->input("description");
-        $course->budget = $request->input("budget");
         $course->hour_count = $request->input("hour_count");
-        $course->participants_count = $request->input("participants_count");
         $course->start_date = $request->input("start_date");
         $course->end_date = $request->input("end_date");
         $course->status = $request->input("status");
         $course->mentor_id = $request->input("mentor_id");
         $course->group_id = $request->input("group_id");
         if(isset($data["image_path"])){
-            $course->image_path = $data["image_path"];
+            $course->image = $data["image_path"];
         }
         $course->save();
         if($course){
@@ -86,22 +71,9 @@ class CourseController extends Controller
      */
     public function show( Course $course)
     {
-        return new CourseResource($course);
-
-        return $course
-            ->load('group:id,title');
+        return $this->apiResponse(new CourseResource($course),'Done',200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -110,7 +82,7 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Course $course)
     {
         $validator=Validator($request->all(),CourseRequest::rules());
         $data = $request->except("image");
@@ -123,19 +95,16 @@ class CourseController extends Controller
             return $this->apiResponse(null,$validator->errors(),Response::HTTP_BAD_REQUEST);
 
         }
-        $course = new Course();
         $course->title = $request->input("title");
         $course->description = $request->input("description");
-        $course->budget = $request->input("budget");
         $course->hour_count = $request->input("hour_count");
-        $course->participants_count = $request->input("participants_count");
         $course->start_date = $request->input("start_date");
         $course->end_date = $request->input("end_date");
         $course->status = $request->input("status");
         $course->mentor_id = $request->input("mentor_id");
         $course->group_id = $request->input("group_id");
         if(isset($data["image_path"])){
-            $course->image_path = $data["image_path"];
+            $course->image = $data["image_path"];
         }
         $course->save();
         if($course){
@@ -152,22 +121,7 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        if($course){
-            $course->delete();
-            return $this->apiResponse(null,"The course deleted sucessfuly!",200);
-        }else{
-            return 'not found';
-        }
-        // $user = Auth::guard('sanctum')->user();
-        // if (!$user->tokenCan('courses.delete')) {
-        //     return response([
-        //         'message' => 'Not allowed'
-        //     ], 403);
-        // }
-
-        // course::destroy($id);
-        // return [
-        //     'message' => 'course deleted successfully',
-        // ];
+        $course->delete();
+        return $this->apiResponse(new CourseResource($course),"The course deleted sucessfuly!",200);
     }
 }
