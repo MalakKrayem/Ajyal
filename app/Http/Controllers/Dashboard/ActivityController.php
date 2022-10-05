@@ -42,17 +42,17 @@ class ActivityController extends Controller
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
-        $activite=new Activity();
-        $activite->title=$request->input('title');
-        $activite->description=$request->input('description');
-        $activite->date=$request->input('date');
-        $activite->project_id=$request->input('project_id');
-        $activite->activite_type_id=$request->input('activite_type_id');
+        $activity=new Activity();
+        $activity->title=$request->input('title');
+        $activity->description=$request->input('description');
+        $activity->date=$request->input('date');
+        $activity->project_id=$request->input('project_id');
+        $activity->activity_type_id=$request->input('activity_type_id');
         if(isset($data["image_path"])){
-            $activite->image = $data["image_path"];
+            $activity->image = $data["image_path"];
         }
-        $activite->save();
-        return $this->apiResponse(new ActivityResource($activite),'Activity Created!',Response::HTTP_CREATED);
+        $activity->save();
+        return $this->apiResponse(new ActivityResource($activity),'Activity Created!',Response::HTTP_CREATED);
     }
 
     /**
@@ -86,7 +86,7 @@ class ActivityController extends Controller
         $activite->description=$request->input('description');
         $activite->date=$request->input('date');
         $activite->project_id=$request->input('project_id');
-        $activite->activity_type_id=$request->input('activite_type_id');
+        $activite->activity_type_id=$request->input('activity_type_id');
         if(isset($data["image_path"])){
             $activite->image = $data["image_path"];
         }
@@ -103,9 +103,6 @@ class ActivityController extends Controller
     public function destroy(Activity $activite)
     {
         $activite->delete();
-        if($activite->image){
-            Storage::disk('public')->delete($activite->image);
-        }
-        return $this->apiResponse(null,'Activity Deleted!',Response::HTTP_NO_CONTENT);
+        return $this->apiResponse($activite,'Activity Deleted!',Response::HTTP_NO_CONTENT);
     }
 }

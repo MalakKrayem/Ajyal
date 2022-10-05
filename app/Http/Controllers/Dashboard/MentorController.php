@@ -22,10 +22,10 @@ class MentorController extends Controller
     public function index()
     {
         $mentors=MentorResource::collection(Mentor::all());
-        if($mentors->count()>0){
-            return $this->apiResponse($mentors,"Ok",Response::HTTP_OK);
+        if($mentors->isEmpty()){
+            return $this->apiResponse(null,"There is no mentors!",404);
         }
-        return $this->apiResponse(null,"Not Found!",Response::HTTP_NOT_FOUND);
+        return $this->apiResponse($mentors,"Done",200);
     }
 
     /**
@@ -74,10 +74,8 @@ class MentorController extends Controller
      */
     public function show(Mentor $mentor)
     {
-        if($mentor){
-            return $this->apiResponse(new MentorResource($mentor),"Ok",Response::HTTP_OK);
-        }
-        return $this->apiResponse(null,"Not Found!",Response::HTTP_NOT_FOUND);
+
+        return $this->apiResponse(new MentorResource($mentor),"Ok",Response::HTTP_OK);
     }
 
     /**
@@ -89,9 +87,6 @@ class MentorController extends Controller
      */
     public function update(Request $request, Mentor $mentor)
     {
-        if(!$mentor){
-            return $this->apiResponse(null,"Not Found!",Response::HTTP_NOT_FOUND);
-        }
         $validator = Validator($request->all(), MentorRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
@@ -129,13 +124,6 @@ class MentorController extends Controller
      */
     public function destroy(Mentor $mentor)
     {
-        if(!$mentor){
-            return $this->apiResponse(null,"Not Found!",Response::HTTP_NOT_FOUND);
-        }
-
-        if($mentor->image) {
-            Storage::disk("public")->delete($mentor->image);
-        }
         $mentor->delete();
         return $this->apiResponse(new MentorResource($mentor),"The mentor deleted sucessfuly!",200);
     }
