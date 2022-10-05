@@ -41,7 +41,7 @@ class AccessTokenController extends Controller
             }
         }
         // Credentials are incorrect
-        return $this->apiResponse(null,"Credentials are incorrect",404);
+        return $this->apiResponse(null,"Credentials are incorrect",401);
     }
 
     // To delete token
