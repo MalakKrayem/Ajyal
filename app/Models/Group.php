@@ -85,8 +85,8 @@ class Group extends Model
         });
     }
     public function students()
-        {
-            return $this->belongsToMany(Student::class, 'student_group', 'group_id', 'student_id');
-        }
+    {
+        return $this->belongsToMany(Student::class, 'student_group', 'group_id', 'student_id');
+    }
 
 }
