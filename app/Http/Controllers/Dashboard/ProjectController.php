@@ -8,6 +8,7 @@ use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use App\Http\Controllers\Dashboard;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProjectController extends Controller
 {
@@ -37,16 +38,13 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $validator=Validator($request->all(),ProjectRequest::rules());
+        $request->validate(ProjectRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
-            $file = $request->file("image");
-            $path = $file->store("uploads", "public");
-            $data["image_path"] = $path;
-        }
-        if($validator->fails()){
-            return $this->apiResponse(null,$validator->errors(),400);
-        }
+        $file = $request->file("image"); //return uploadedfile object
+        $path = $file->store("uploads", "public");
+        $data["image_path"] = $path;
+    }
         $project = new Project();
         $project->title = $request->input("title");
         $project->description = $request->input("description");
@@ -57,7 +55,7 @@ class ProjectController extends Controller
         if(isset($data["image_path"])){
             $project->image_path = $data["image_path"];
         }
-        $project->update();
+        $project->save();
         if($project){
             return $this->apiResponse($project,"The project saved!",201);
         }
@@ -86,30 +84,25 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        $validator=Validator($request->all(),ProjectRequest::rules());
+        if(!$project){
+            return $this->apiResponse(null,'Not found!',500);
+        }
+        $request->validate(ProjectRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
-            $file = $request->file("image");
+            $file = $request->file("image"); //return uploadedfile object
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
-        if($validator->fails()){
-            return $this->apiResponse(null,$validator->errors(),400);
-        }
-        $project->title = $request->input("title");
-        $project->description = $request->input("description");
-        $project->budget = $request->input("budget");
-        $project->start_date = $request->input("start_date");
-        $project->end_date = $request->input("end_date");
-        $project->status = $request->input("status");
         if(isset($data["image_path"])){
-            $project->image_path = $data["image_path"];
+            $project->image=$data["image_path"];
         }
-        $project->save();
+        $project->update($request->all());
         if($project){
-            return $this->apiResponse($project,"The project saved!",201);
+            return $this->apiResponse(new ProjectResource($project),'project update succeccfully!',Response::HTTP_OK);
+
         }
-            return $this->apiResponse(null,"The project not saved!",404);
+            return $this->apiResponse(null,"The project not updated!",404);
         }
 
     /**

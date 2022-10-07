@@ -28,6 +28,7 @@ class CourseRequest extends FormRequest
             'mentor_id'=>'required|integer|exists:mentors,id',
             'title' => 'required|string|max:100',
             'description' => 'required|string|max:255',
+            'image'=>'string|mims:pjpeg,png,jpg,gif,svg',
             'budget'=>'numeric',
             'participants_count'=>'integer',
             'hour_count'=>'integer',

@@ -9,6 +9,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 
 class CategoriesController extends Controller
 {
@@ -36,19 +37,14 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        $validator=Validator($request->all(),CategoryRequest::rules());
-        $data = $request->except("image");
-        if ($request->hasFile("image")) {
-            $file = $request->file("image"); //return uploadedfile object
-            $path = $file->store("uploads", "public");
-            $data["image_path"] = $path;
-        }
 
-        if ($validator->fails()) {
-            return $this->apiResponse(null,$validator->errors(),400);
-
-        }
-
+    $request->validate(CategoryRequest::rules());
+    $data = $request->except("image");
+    if ($request->hasFile("image")) {
+        $file = $request->file("image"); //return uploadedfile object
+        $path = $file->store("uploads", "public");
+        $data["image_path"] = $path;
+    }
         $category=new Category();
         $category->title=$request->input('title');
         $category->description=$request->input('description');
@@ -86,28 +82,26 @@ class CategoriesController extends Controller
      */
     public function update(Request $request , Category $category)
     {
-        $validator=Validator($request->all(),CategoryRequest::rules());
+        if(!$category){
+            return $this->apiResponse(null,'Not found!',500);
+        }
+        $request->validate(CategoryRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
-
-        if ($validator->fails()) {
-            return $this->apiResponse(null,$validator->errors(),400);
-        }
-
-        $category->title=$request->input('title');
-        $category->description=$request->input('description');
         if(isset($data["image_path"])){
             $category->image=$data["image_path"];
         }
-        $category->save();
+        $category->update($request->all());
+
         if($category){
-            return $this->apiResponse($category,"The category saved!",201);
+            return $this->apiResponse(new CategoryResource($category),'Category update succeccfully!',Response::HTTP_OK);
         }
-        return $this->apiResponse(null,"The category not saved!",404);
+        return $this->apiResponse(null,'Error',500);
+
     }
 
     /**
@@ -118,12 +112,16 @@ class CategoriesController extends Controller
      */
     public function destroy(Category $category)
     {
-        if($category){
-            $category->delete();
-            return $this->apiResponse(null,"The category deleted sucessfuly!",200);
-        }else{
-            return 'not found';
+
+        if(!$category){
+            return $this->apiResponse(null,"Not Found!",Response::HTTP_NOT_FOUND);
         }
+        // if($category->image) {
+        //     Storage::disk("public")->delete($category->image);
+        // }
+        $category->delete();
+        return $this->apiResponse(new CategoryResource($category),"The category deleted sucessfuly!",Response::HTTP_OK);
+
     //     $user = Auth::guard('sanctum')->user();
     //     if (!$user->tokenCan('category.delete')) {
     //         return response([
