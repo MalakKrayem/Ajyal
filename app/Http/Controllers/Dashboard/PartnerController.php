@@ -45,6 +45,7 @@ class PartnerController extends Controller
         $partner= new Partner();
         $partner->name = $request->input("name");
         $partner->description = $request->input("description");
+
         if(isset($data["image_path"])){
             $partner->logo = $data["image_path"];
         }
