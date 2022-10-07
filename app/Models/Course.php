@@ -29,7 +29,6 @@ class Course extends Model
     ];
 
     protected $hidden = [
-        'image',
         'created_at', 'updated_at', 'deleted_at',
     ];
 
@@ -46,7 +45,10 @@ class Course extends Model
         return $this->belongsTo(Mentor::class, 'mentor_id', 'id');
     }
 
-
+    public function galleries()
+    {
+        return $this->hasMany(Gallery::class, 'course_id', 'id');
+    }
 
     // public function scopeDraft(Builder $builder)
     // {
