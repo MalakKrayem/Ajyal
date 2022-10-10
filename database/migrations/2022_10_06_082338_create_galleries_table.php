@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('course_id')->nullable()->constrained('courses')->nullOnDelete();
             $table->string("description")->nullable();
-            $table->string('image')->nullable();
+            $table->string('image');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -134,10 +134,10 @@ class GalleryController extends Controller
     public function destroy(Gallery $gallery)
     {
         if($gallery){
+            $gallery->delete();
             if($gallery->image) {
                 Storage::disk("public")->delete($gallery->image);
             }
-            $gallery->delete();
             return $this->apiResponse(null,"The gallery deleted sucessfuly!",200);
         }else{
             return $this->apiResponse(null,"Not Found!",Response::HTTP_NOT_FOUND);

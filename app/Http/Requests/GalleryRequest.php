@@ -26,7 +26,7 @@ class GalleryRequest extends FormRequest
         return [
             'course_id'=>'required|integer|exists:courses,id',
             'description' => 'required|string|max:255',
-            'image'=>'string',
+            'image'=>'required|string',
 
 
 
