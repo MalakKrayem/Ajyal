@@ -32,9 +32,8 @@ class ActivitiesTypeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ActivitesTypeRequest $request)
     {
-        $request->validate(ActivitesTypeRequest::rules());
         $activitiesType = ActivitiesType::create($request->all());
         return $this->apiResponse($activitiesType,'Type created!',Response::HTTP_CREATED);
     }
@@ -57,9 +56,8 @@ class ActivitiesTypeController extends Controller
      * @param  \App\Models\ActivitiesType  $activitiesType
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ActivitiesType $activitiesType)
+    public function update(ActivitesTypeRequest $request, ActivitiesType $activitiesType)
     {
-        $request->validate(ActivitesTypeRequest::rules());
         $activitiesType->update($request->all());
         return $this->apiResponse($activitiesType,'Type Updated!',Response::HTTP_OK);
     }

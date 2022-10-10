@@ -29,19 +29,15 @@ class CourseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CourseRequest $request)
     {
-        $validator=Validator($request->all(),CourseRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
-        if($validator->fails()){
-            return $this->apiResponse(null,$validator->errors(),Response::HTTP_BAD_REQUEST);
 
-        }
         $course = new Course();
         $course->title = $request->input("title");
         $course->description = $request->input("description");
@@ -82,19 +78,15 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Course $course)
+    public function update(CourseRequest $request, Course $course)
     {
-        $validator=Validator($request->all(),CourseRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image");
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
-        if($validator->fails()){
-            return $this->apiResponse(null,$validator->errors(),Response::HTTP_BAD_REQUEST);
 
-        }
         $course->title = $request->input("title");
         $course->description = $request->input("description");
         $course->hour_count = $request->input("hour_count");

@@ -78,9 +78,13 @@ class Course extends Model
         $builder->when($options['status'], function ($query, $status) {
             return $query->where('status', $status);
         });
-
-
-
     }
+    //relation with course day
+    public function course_days()
+    {
+        return $this->hasMany(CourseDay::class, 'course_id', 'id');
+    }
+    //relation with attendence
+    
 
 }

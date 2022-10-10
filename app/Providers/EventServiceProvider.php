@@ -2,10 +2,18 @@
 
 namespace App\Providers;
 
+use App\Events\IncreasePlatformJobsCount;
+use App\Events\IncreaseStudenIncome;
+use App\Events\IncreaseStudenJobs;
 use App\Events\ProjectPartnerEvent;
 use App\Events\StudentGroupEvent;
+use App\Events\UpdateStudentRate;
+use App\Listeners\IncreasePlatformJobsCountListener;
+use App\Listeners\IncreaseStudenIncomeListener;
+use App\Listeners\IncreaseStudenJobsListener;
 use App\Listeners\ProjectPartnerRelation;
 use App\Listeners\StudentGroupRelation;
+use App\Listeners\UpdateStudentRateListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -27,7 +35,19 @@ class EventServiceProvider extends ServiceProvider
         ],
         StudentGroupEvent::class=>[
             StudentGroupRelation::class,
-        ]
+        ],
+        IncreaseStudenJobs::class=>[
+            IncreaseStudenJobsListener::class,
+        ],
+        IncreaseStudenIncome::class=>[
+            IncreaseStudenIncomeListener::class,
+        ],
+        IncreasePlatformJobsCount::class=>[
+            IncreasePlatformJobsCountListener::class,
+        ],
+        UpdateStudentRate::class=>[
+            UpdateStudentRateListener::class,
+        ],
 
     ];
 

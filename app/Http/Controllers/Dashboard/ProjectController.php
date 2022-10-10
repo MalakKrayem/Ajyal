@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Events\ProjectPartnerEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
@@ -36,18 +37,15 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProjectRequest $request)
     {
-        $validator=Validator($request->all(),ProjectRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image");
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
-        if($validator->fails()){
-            return $this->apiResponse(null,$validator->errors(),400);
-        }
+
         $project = new Project();
         $project->title = $request->input("title");
         $project->description = $request->input("description");
@@ -59,6 +57,9 @@ class ProjectController extends Controller
             $project->image = $data["image_path"];
         }
         $project->save();
+
+        event(new ProjectPartnerEvent($project->id,$request->input("partner_id")));
+
         if($project){
             return $this->apiResponse($project,"The project saved!",201);
         }
@@ -85,18 +86,15 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(ProjectRequest $request, Project $project)
     {
-        $validator=Validator($request->all(),ProjectRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image");
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
-        if($validator->fails()){
-            return $this->apiResponse(null,$validator->errors(),400);
-        }
+
         $project->title = $request->input("title");
         $project->description = $request->input("description");
         $project->budget = $request->input("budget");

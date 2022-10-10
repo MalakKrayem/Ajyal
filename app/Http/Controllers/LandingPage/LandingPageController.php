@@ -38,15 +38,9 @@ class LandingPageController extends Controller
         ],'Done',200);
     }
 
-    public function store(Request $request)
+    public function store(LandingPageRequest $request)
     {
-        $request->validate(LandingPageRequest::rules());
-        //edit
-        // $section = LandingPage::where('key', $request->key)->first();
-        // if($section){
-        //     $section->update($request->all());
-        //     return $this->apiResponse(new LandingPageResource($section),'Done',200);
-        // }
+
         $landingPage = LandingPage::updateOrCreate(['key' => $request->key], $request->all());
         $landingPage->save();
         return $this->apiResponse(new LandingPageResource($landingPage), 'Done', 201);

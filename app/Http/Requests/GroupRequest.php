@@ -13,7 +13,7 @@ class GroupRequest extends FormRequest
      */
     public  function authorize()
     {
-
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class GroupRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public static function rules()
+    public function rules()
     {
         return [
             'category_id'=>'required|integer|exists:categories,id',

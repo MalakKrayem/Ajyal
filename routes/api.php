@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AccessTokenController;
 use App\Http\Controllers\Dashboard\ActivitiesTypeController;
 use App\Http\Controllers\Dashboard\ActivityController;
 use App\Http\Controllers\Dashboard\AdvertisingController;
+use App\Http\Controllers\Dashboard\AttendenceController;
 use App\Http\Controllers\Dashboard\CategoriesController;
 use App\Http\Controllers\Dashboard\CourseController;
 use App\Http\Controllers\Dashboard\GroupController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Dashboard\RateController;
 use App\Http\Controllers\Dashboard\StudentController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\LandingPage\LandingPageController;
+use App\Http\Controllers\Student\FreelanceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -52,4 +54,8 @@ Route::middleware('auth:sanctum')->prefix('dashboard')->group(function(){
     Route::apiResource('courses', CourseController::class);
     Route::apiResource('students', StudentController::class);
     Route::apiResource('rates', RateController::class);
+    Route::apiResource('attendences', AttendenceController::class);
+});
+Route::middleware('auth:sanctum')->prefix('student')->group(function(){
+    Route::apiResource('freelances',FreelanceController::class);
 });

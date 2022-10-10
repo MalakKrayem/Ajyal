@@ -34,9 +34,8 @@ class PartnerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PartnerRequest $request)
     {
-        $request->validate(PartnerRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object
@@ -51,9 +50,6 @@ class PartnerController extends Controller
             $partner->logo = $data["image_path"];
         }
         $partner->save();
-
-        event(new ProjectPartnerEvent($request->input("project_id"),$partner->id));
-
         if($partner){
             return $this->apiResponse(new PartnerResource($partner),'Partner added successfully!',Response::HTTP_CREATED);
         }
@@ -79,9 +75,8 @@ class PartnerController extends Controller
      * @param  \App\Models\Partner  $partner
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Partner $partner)
+    public function update(PartnerRequest $request, Partner $partner)
     {
-        $request->validate(PartnerRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object

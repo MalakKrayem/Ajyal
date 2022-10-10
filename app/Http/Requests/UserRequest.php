@@ -14,7 +14,7 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,12 +22,12 @@ class UserRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public static function rules()
+    public function rules($id=0)
     {
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => "required|email|unique:users,email",
+            'email' => "required|email|unique:users,email,".$id,
             'password' => 'required|string|min:8|max:15',
             'gender'=>'required|string|in:female,male',
             'image'=>'mimes:jpg,png',

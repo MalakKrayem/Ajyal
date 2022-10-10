@@ -13,7 +13,7 @@ class ProjectRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class ProjectRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public static function rules()
+    public function rules()
     {
         return [
             'title' => 'required|string|max:100',
@@ -30,6 +30,7 @@ class ProjectRequest extends FormRequest
             'status'=>'string|in:draft,completed,ongoing',
             'start_date'=>'string',
             'end_date'=>'string',
+            'partner_id'=>'numeric|exists:partners,id',
         ];
     }
 }

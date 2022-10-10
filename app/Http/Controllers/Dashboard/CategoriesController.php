@@ -33,18 +33,13 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $validator=Validator($request->all(),CategoryRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
-        }
-
-        if ($validator->fails()) {
-            return $this->apiResponse(null,$validator->errors(),400);
         }
 
         $category=new Category();
@@ -80,18 +75,13 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request , Category $category)
+    public function update(CategoryRequest $request , Category $category)
     {
-        $validator=Validator($request->all(),CategoryRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
-        }
-
-        if ($validator->fails()) {
-            return $this->apiResponse(null,$validator->errors(),400);
         }
 
         $category->title=$request->input('title');

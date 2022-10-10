@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ActivityRequest extends FormRequest
+class AttendenceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,10 @@ class ActivityRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'=>'required|string|max:255',
-            'description'=>'required|string|max:1000',
-            'image'=>'image|mimes:jpeg,png,jpg,svg',
-            'date'=>'required|string',
-            'project_id'=>'required|integer|exists:projects,id',
-            'activity_type_id'=>'required|integer|exists:activities_types,id'
+            'course_id' => 'required|exists:courses,id',
+            'date' => 'required|string',
+            'status' => 'required|in:attend,absent',
+            'student_id' => 'required|exists:students,id',
         ];
     }
 }

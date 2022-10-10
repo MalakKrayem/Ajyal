@@ -27,18 +27,15 @@ class GroupController extends Controller
         return $this->apiResponse($groups, 'Done', 200);
     }
 
-    public function store(Request $request)
+    public function store(GroupRequest $request)
     {
-        $validator=Validator($request->all(),GroupRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image");
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
-        if($validator->fails()){
-            return $this->apiResponse(null,$validator->errors(),400);
-        }
+
         $group = new Group();
         $group->title = $request->input("title");
         $group->description = $request->input("description");
@@ -78,18 +75,15 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Group $group)
+    public function update(GroupRequest $request, Group $group)
     {
-        $validator=Validator($request->all(),GroupRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image");
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
-        if($validator->fails()){
-            return $this->apiResponse(null,$validator->errors(),400);
-        }
+
         $group->title = $request->input("title");
         $group->description = $request->input("description");
         $group->budget = $request->input("budget");
