@@ -26,6 +26,7 @@ class ProjectRequest extends FormRequest
         return [
             'title' => 'required|string|max:100',
             'description' => 'required|string|max:255',
+            'image'=>'string|mims:pjpeg,png,jpg,gif,svg',
             'budget'=>'numeric',
             'status'=>'string|in:draft,completed,ongoing',
             'start_date'=>'string',

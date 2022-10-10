@@ -28,6 +28,7 @@ class GroupRequest extends FormRequest
             'project_id'=>'integer|exists:projects,id',
             'title' => 'required|string|max:100',
             'description' => 'required|string|max:255',
+            'image'=>'string|mims:pjpeg,png,jpg,gif,svg',
             'budget'=>'numeric',
             'hour_count'=>'integer',
             'participants_count'=>'integer',

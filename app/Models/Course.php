@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
@@ -18,7 +18,7 @@ class Course extends Model
         'title',
         'description',
         'image',
-        'category_id',
+        'group_id',
         'mentor_id',
         'budget',
         'hour_count',
@@ -29,7 +29,6 @@ class Course extends Model
     ];
 
     protected $hidden = [
-        'image',
         'created_at', 'updated_at', 'deleted_at',
     ];
 
@@ -41,15 +40,20 @@ class Course extends Model
         return $this->belongsTo(Group::class, 'group_id', 'id');
     }
 
-    // public function mentor()
-    // {
-    //     return $this->belongsTo(Mentor::class, 'mentor_id', 'id');
-    // }
-
-    public function scopeDraft(Builder $builder)
+    public function mentor()
     {
-        $builder->where('status', '=', 'draft');
+        return $this->belongsTo(Mentor::class, 'mentor_id', 'id');
     }
+
+    public function galleries()
+    {
+        return $this->hasMany(Gallery::class, 'course_id', 'id');
+    }
+
+    // public function scopeDraft(Builder $builder)
+    // {
+    //     $builder->where('status', '=', 'draft');
+    // }
     public function getImageUrlAttribute()
     {
         if (!$this->image) {
@@ -65,16 +69,16 @@ class Course extends Model
     {
         $options = array_merge([
             'group_id' => null,
-           // 'mentor_id' => null,
+           'mentor_id' => null,
             'status' => 'draft',
         ], $filters);
 
         $builder->when($options['group_id'], function($builder, $value) {
             $builder->where('group_id', $value);
         });
-        // $builder->when($options['mentor_id'], function($builder, $value) {
-        //     $builder->where('mentor_id', $value);
-        // });
+        $builder->when($options['mentor_id'], function($builder, $value) {
+            $builder->where('mentor_id', $value);
+        });
         $builder->when($options['status'], function ($query, $status) {
             return $query->where('status', $status);
         });

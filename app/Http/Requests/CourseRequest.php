@@ -25,9 +25,10 @@ class CourseRequest extends FormRequest
     {
         return [
             'group_id'=>'required|integer|exists:groups,id',
-            'mentor_id'=>'integer|exists:mentors,id',
+            'mentor_id'=>'required|integer|exists:mentors,id',
             'title' => 'required|string|max:100',
             'description' => 'required|string|max:255',
+            'image'=>'string|mims:pjpeg,png,jpg,gif,svg',
             'budget'=>'numeric',
             'participants_count'=>'integer',
             'hour_count'=>'integer',
