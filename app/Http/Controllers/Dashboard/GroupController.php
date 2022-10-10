@@ -9,16 +9,16 @@ use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use PHPUnit\Framework\MockObject\Api;
 
 class GroupController extends Controller
 {
     use ApiResponseTrait;
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // / * Display a listing of the resource.
+    //  *
+    //  * @return \Illuminate\Http\Response
+    //  */
     public function index(Request $request)
     {
         // $groups = Group::filter($request->query())
@@ -28,6 +28,7 @@ class GroupController extends Controller
         //  return GroupResource::collection($groups);
 
          return GroupResource::collection(Group::all());
+
 
 
     }

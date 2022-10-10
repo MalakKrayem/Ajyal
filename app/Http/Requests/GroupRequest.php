@@ -34,7 +34,7 @@ class GroupRequest extends FormRequest
             'participants_count'=>'integer',
             'start_date'=>'string',
             'end_date'=>'string',
-            'status'=>'string|in,draft,completed,ongoing',
+            'status'=>'string|in:draft,completed,ongoing',
 
         ];
     }

@@ -62,4 +62,8 @@ class Project extends Model
     {
         return $this->belongsToMany(Partner::class,'project_partner');
     }
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
+    }
 }
