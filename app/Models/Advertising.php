@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Advertising extends Model
@@ -32,5 +33,16 @@ class Advertising extends Model
         }
 
         return asset('storage/' . $this->image);
+    }
+
+    //Deleted observer
+    public static function boot()
+    {
+        parent::boot();
+        static::deleted(function ($advertising) {
+            if ($advertising->image) {
+                Storage::disk('public')->delete($advertising->image);
+            }
+        });
     }
 }
