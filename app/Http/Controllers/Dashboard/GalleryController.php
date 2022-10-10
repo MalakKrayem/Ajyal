@@ -53,15 +53,8 @@ class GalleryController extends Controller
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
-        $gallery= new Gallery();
-        $gallery->course_id = $request->input("course_id");
-        $gallery->description = $request->input("description");
-
-        if(isset($data["image_path"])){
-            $gallery->image_path = $data["image_path"];
-        }
-        $gallery->save();
-        if($gallery){
+            $gallery = Gallery::create($request->all());
+            if($gallery){
             return $this->apiResponse(new GalleryResource($gallery),'Gallery added successfully!',Response::HTTP_CREATED);
         }
         return $this->apiResponse(null,'Error',Response::HTTP_INTERNAL_SERVER_ERROR);

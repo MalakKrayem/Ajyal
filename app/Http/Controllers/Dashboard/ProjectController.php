@@ -48,22 +48,13 @@ class ProjectController extends Controller
         $path = $file->store("uploads", "public");
         $data["image_path"] = $path;
     }
-        $project = new Project();
-        $project->title = $request->input("title");
-        $project->description = $request->input("description");
-        $project->budget = $request->input("budget");
-        $project->status = $request->input("status");
-        $project->start_date = $request->input("start_date");
-        $project->end_date = $request->input("end_date");
-        if(isset($data["image_path"])){
-            $project->image = $data["image_path"];
+
+       $project = Project::create($request->all());
+       if($project){
+        return $this->apiResponse(new ProjectResource($project),'project added successfully!',Response::HTTP_CREATED);
         }
-        $project->save();
-        if($project){
-            return $this->apiResponse($project,"The project saved!",201);
-        }
-            return $this->apiResponse(null,"The project not saved!",404);
-    }
+        return $this->apiResponse(null,'Error',Response::HTTP_INTERNAL_SERVER_ERROR);
+}
 
     /**
      * Display the specified resource.

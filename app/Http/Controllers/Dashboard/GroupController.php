@@ -43,26 +43,13 @@ class GroupController extends Controller
         $path = $file->store("uploads", "public");
         $data["image_path"] = $path;
     }
-        $group = new Group();
-        $group->title = $request->input("title");
-        $group->description = $request->input("description");
-        $group->budget = $request->input("budget");
-        $group->hour_count = $request->input("hour_count");
-        $group->participants_count = $request->input("participants_count");
-        $group->status = $request->input("status");
-        $group->start_date = $request->input("start_date");
-        $group->end_date = $request->input("end_date");
-        $group->category_id = $request->input("category_id");
-        $group->project_id = $request->input("project_id");
-        if(isset($data["image_path"])){
-            $group->image = $data["image_path"];
+        $group = Group::create($request->all());
+            if($group){
+            return $this->apiResponse(new GroupResource($group),'group added successfully!',Response::HTTP_CREATED);
         }
-        $group->save();
-        if($group){
-            return $this->apiResponse($group,"The group saved!",201);
-        }
-            return $this->apiResponse(null,"The group not saved!",404);
-        }
+        return $this->apiResponse(null,'Error',Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
 
     /**
      * Display the specified resource.
