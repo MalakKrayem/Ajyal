@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 
@@ -65,5 +66,15 @@ class Project extends Model
     public function activities()
     {
         return $this->hasMany(Activity::class);
+    }
+    //Deleted Observer
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function($project) {
+            if($project->image){
+                Storage::disk('public')->delete($project->image);
+            }
+        });
     }
 }

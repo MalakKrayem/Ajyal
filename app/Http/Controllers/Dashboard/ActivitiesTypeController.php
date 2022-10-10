@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Dashboard\ApiResponseTrait;
+use App\Http\Requests\ActivitesTypeRequest;
 use App\Models\ActivitiesType;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +34,7 @@ class ActivitiesTypeController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(ActivitesTypeRequest::rules());
         $activitiesType = ActivitiesType::create($request->all());
         return $this->apiResponse($activitiesType,'Type created!',Response::HTTP_CREATED);
     }
@@ -57,6 +59,7 @@ class ActivitiesTypeController extends Controller
      */
     public function update(Request $request, ActivitiesType $activitiesType)
     {
+        $request->validate(ActivitesTypeRequest::rules());
         $activitiesType->update($request->all());
         return $this->apiResponse($activitiesType,'Type Updated!',Response::HTTP_OK);
     }
@@ -70,6 +73,6 @@ class ActivitiesTypeController extends Controller
     public function destroy(ActivitiesType $activitiesType)
     {
         $activitiesType->delete();
-        return $this->apiResponse(null,'Type deleted!',Response::HTTP_NO_CONTENT);
+        return $this->apiResponse($activitiesType,'Type deleted!',Response::HTTP_NO_CONTENT);
     }
 }

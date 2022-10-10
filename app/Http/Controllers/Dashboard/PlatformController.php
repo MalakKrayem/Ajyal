@@ -63,10 +63,8 @@ class PlatformController extends Controller
      */
     public function show(Platform $platform)
     {
-        if($platform){
-            return $this->apiResponse(new PlatformResource($platform),'Done',Response::HTTP_OK);
-        }
-        return $this->apiResponse(null,'Not found!',500);
+        return $this->apiResponse(new PlatformResource($platform),'Done',Response::HTTP_OK);
+
     }
 
     /**
@@ -78,9 +76,6 @@ class PlatformController extends Controller
      */
     public function update(Request $request, Platform $platform)
     {
-        if(!$platform){
-            return $this->apiResponse(null,'Not found!',500);
-        }
         $request->validate(PlatformRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
@@ -109,13 +104,6 @@ class PlatformController extends Controller
      */
     public function destroy(Platform $platform)
     {
-        if(!$platform){
-            return $this->apiResponse(null,"Not Found!",Response::HTTP_NOT_FOUND);
-        }
-
-        if($platform->image) {
-            Storage::disk("public")->delete($platform->image);
-        }
         $platform->delete();
         return $this->apiResponse(new PlatformResource($platform),"The platform deleted sucessfuly!",Response::HTTP_OK);
     }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Activity extends Model
 {
@@ -23,5 +24,15 @@ class Activity extends Model
     public function activityType()
     {
         return $this->belongsTo(ActivitiesType::class);
+    }
+    //Deleted observer
+    public static function boot()
+    {
+        parent::boot();
+        static::deleted(function ($activity) {
+            if ($activity->image) {
+                Storage::disk('public')->delete($activity->image);
+            }
+        });
     }
 }

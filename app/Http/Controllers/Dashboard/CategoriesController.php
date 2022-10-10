@@ -19,14 +19,13 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(CategoryRequest $request)
     {
-
         $categories = Category::filter($request->query())
         ->orderBy('categories.title')
         ->paginate();
 
-        return CategoryResource::collection($categories);
+        return $this->apiResponse(CategoryResource::collection($categories), 'Done', 200);
     }
 
     /**
@@ -37,23 +36,18 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-
-    $request->validate(CategoryRequest::rules());
-    $data = $request->except("image");
-    if ($request->hasFile("image")) {
+        $request->validate(CategoryRequest::rules());
+        $data = $request->except("image");
+        if ($request->hasFile("image")) {
         $file = $request->file("image"); //return uploadedfile object
         $path = $file->store("uploads", "public");
         $data["image_path"] = $path;
     }
-        $category=new Category();
-        $category->title=$request->input('title');
-        $category->description=$request->input('description');
-        if(isset($data["image_path"])){
-            $category->image=$data["image_path"];
-        }
-        $category->save();
+
+        $category = Category::create($request->all());
         if($category){
-            return $this->apiResponse($category,"The category saved!",201);
+        return $this->apiResponse(new CategoryResource($category),'Category Saved!',200);
+
         }
         return $this->apiResponse(null,"The category not saved!",404);
     }
@@ -67,10 +61,8 @@ class CategoriesController extends Controller
     public function show(Category $category)
     {
 
-        if($category){
-            return $this->apiResponse(new CategoryResource($category),"Ok",200);
-        }
-        return $this->apiResponse(null,"Not Found!",404);
+        return $this->apiResponse(new CategoryResource($category),"Ok",200);
+
     }
 
     /**
@@ -98,10 +90,9 @@ class CategoriesController extends Controller
         $category->update($request->all());
 
         if($category){
-            return $this->apiResponse(new CategoryResource($category),'Category update succeccfully!',Response::HTTP_OK);
+            return $this->apiResponse($category,"The category saved!",201);
         }
-        return $this->apiResponse(null,'Error',500);
-
+        return $this->apiResponse(null,"The category not saved!",404);
     }
 
     /**
@@ -112,16 +103,12 @@ class CategoriesController extends Controller
      */
     public function destroy(Category $category)
     {
-
-        if(!$category){
-            return $this->apiResponse(null,"Not Found!",Response::HTTP_NOT_FOUND);
+        if($category){
+            $category->delete();
+            return $this->apiResponse(null,"The category deleted sucessfuly!",200);
+        }else{
+            return 'not found';
         }
-        // if($category->image) {
-        //     Storage::disk("public")->delete($category->image);
-        // }
-        $category->delete();
-        return $this->apiResponse(new CategoryResource($category),"The category deleted sucessfuly!",Response::HTTP_OK);
-
     //     $user = Auth::guard('sanctum')->user();
     //     if (!$user->tokenCan('category.delete')) {
     //         return response([

@@ -73,10 +73,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        if($user){
-            return $this->apiResponse(new UserResource($user),"Ok",200);
-        }
-        return $this->apiResponse(null,"Not Found!",404);
+        return $this->apiResponse(new UserResource($user),"Done",200);
     }
 
     /**
@@ -88,9 +85,6 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        if(!$user){
-            return $this->apiResponse(null,"Not Found!",404);
-        }
         $request->validate(UserRequest::rules($user));
         $data = $request->except("image");
         if ($request->hasFile("image")) {
@@ -125,15 +119,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-
-        if($user){
-            if ($user->image) {
-                Storage::disk("public")->delete($user->image);
-            }
-            $user->delete();
-            return $this->apiResponse($user,"The user deleted sucessfuly!",200);
-        }
-        return $this->apiResponse(null,"Not Found!",404);
-
+        $user->delete();
+        return $this->apiResponse($user,"The user deleted!",200);
     }
 }

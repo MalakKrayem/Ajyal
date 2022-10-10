@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 
@@ -87,6 +88,17 @@ class Group extends Model
     public function students()
     {
         return $this->belongsToMany(Student::class, 'student_group', 'group_id', 'student_id');
+    }
+
+    //Deleted Observer
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($group) {
+            if($group->image){
+                Storage::disk('public')->delete($group->image);
+            }
+        });
     }
 
 }

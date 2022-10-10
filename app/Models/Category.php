@@ -19,12 +19,14 @@ class Category extends Model
     protected $fillable = [
         'title',
         'description',
-
+        'image',
     ];
 
 
     protected $hidden = [
-        'image',
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
 
 
