@@ -27,10 +27,10 @@ class Project extends Model
         'image',
     ];
 
-    public function scopeDraft(Builder $builder)
-    {
-        $builder->where('status', '=', 'draft');
-    }
+    // public function scopeDraft(Builder $builder)
+    // {
+    //     $builder->where('status', '=', 'draft');
+    // }
     public function gruops()
     {
         return $this->hasMany(Group::class, 'project_id', 'id');

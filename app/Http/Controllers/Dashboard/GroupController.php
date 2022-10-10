@@ -8,57 +8,48 @@ use App\Http\Resources\GroupResource;
 use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 use PHPUnit\Framework\MockObject\Api;
 
 class GroupController extends Controller
 {
     use ApiResponseTrait;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    // / * Display a listing of the resource.
+    //  *
+    //  * @return \Illuminate\Http\Response
+    //  */
     public function index(Request $request)
     {
-        $groups = GroupResource::collection(Group::all());
-        if($groups->isEmpty()){
-            return $this->apiResponse(null, 'No Groups Found', 404);
-        }
-        return $this->apiResponse($groups, 'Done', 200);
+
+        // $groups = Group::filter($request->query())
+        // ->with('project:id,title','category:id,title')
+        // ->paginate();
+
+        //  return GroupResource::collection($groups);
+
+         return GroupResource::collection(Group::all());
+
+
+
     }
 
     public function store(Request $request)
     {
-        $validator=Validator($request->all(),GroupRequest::rules());
+        $request->validate(GroupRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
-            $file = $request->file("image");
-            $path = $file->store("uploads", "public");
-            $data["image_path"] = $path;
+        $file = $request->file("image"); //return uploadedfile object
+        $path = $file->store("uploads", "public");
+        $data["image_path"] = $path;
+    }
+        $group = Group::create($request->all());
+            if($group){
+            return $this->apiResponse(new GroupResource($group),'group added successfully!',Response::HTTP_CREATED);
         }
-        if($validator->fails()){
-            return $this->apiResponse(null,$validator->errors(),400);
-        }
-        $group = new Group();
-        $group->title = $request->input("title");
-        $group->description = $request->input("description");
-        $group->budget = $request->input("budget");
-        $group->hour_count = $request->input("hour_count");
-        $group->participants_count = $request->input("participants_count");
-        $group->status = $request->input("status");
-        $group->start_date = $request->input("start_date");
-        $group->end_date = $request->input("end_date");
-        $group->category_id = $request->input("category_id");
-        $group->project_id = $request->input("project_id");
-        if(isset($data["image_path"])){
-            $group->image = $data["image_path"];
-        }
-        $group->save();
-        if($group){
-            return $this->apiResponse($group,"The group saved!",201);
-        }
-            return $this->apiResponse(null,"The group not saved!",404);
-        }
+        return $this->apiResponse(null,'Error',Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
 
     /**
      * Display the specified resource.
@@ -80,34 +71,28 @@ class GroupController extends Controller
      */
     public function update(Request $request, Group $group)
     {
-        $validator=Validator($request->all(),GroupRequest::rules());
+        if(!$group){
+            return $this->apiResponse(null,'Not found!',500);
+        }
+        $request->validate(GroupRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
-            $file = $request->file("image");
+            $file = $request->file("image"); //return uploadedfile object
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
-        if($validator->fails()){
-            return $this->apiResponse(null,$validator->errors(),400);
-        }
-        $group->title = $request->input("title");
-        $group->description = $request->input("description");
-        $group->budget = $request->input("budget");
-        $group->hour_count = $request->input("hour_count");
-        $group->participants_count = $request->input("participants_count");
-        $group->status = $request->input("status");
-        $group->start_date = $request->input("start_date");
-        $group->end_date = $request->input("end_date");
-        $group->category_id = $request->input("category_id");
-        $group->project_id = $request->input("project_id");
+
         if(isset($data["image_path"])){
             $group->image = $data["image_path"];
         }
-        $group->update();
+        $group->update($request->all());
+
         if($group){
-            return $this->apiResponse($group,"The group updated!",201);
+            return $this->apiResponse(new GroupResource($group),'Group update succeccfully!',Response::HTTP_OK);
+
         }
-            return $this->apiResponse(null,"The group not updated!",404);
+            return $this->apiResponse(null,"The Group not updated!",404);
+
     }
 
     /**

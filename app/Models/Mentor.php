@@ -28,6 +28,11 @@ class Mentor extends Authenticatable
         return $this->first_name . ' ' . $this->last_name;
     }
 
+    public function courses()
+    {
+        return $this->hasMany(Course::class, 'mentor_id', 'id');
+    }
+
     public function getImageUrlAttribute()
     {
         if (!$this->image) {
