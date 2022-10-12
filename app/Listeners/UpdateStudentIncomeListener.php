@@ -29,8 +29,16 @@ class UpdateStudentIncomeListener
     {
         $salary=$event->salary;
         $student=$event->student;
+        $old_salary=$event->old_salary;
         $student=Student::find($student);
-        $student->total_income=$student->total_income +$salary;
-        $student->save();
+        
+        if($old_salary == null && $salary != null){
+            $student->total_income=$student->total_income +$salary;
+            $student->save();
+        }elseif($old_salary != null && $old_salary != $salary){
+            $diff=$salary-$old_salary;
+            $student->total_income=$student->total_income +$diff;
+            $student->save();
+        }
     }
 }

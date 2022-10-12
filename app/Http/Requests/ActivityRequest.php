@@ -27,7 +27,7 @@ class ActivityRequest extends FormRequest
             'title'=>'required|string|max:255',
             'description'=>'required|string|max:1000',
             'image'=>'image|mimes:jpeg,png,jpg,svg',
-            'date'=>'required|string',
+            'date'=>'required|date',
             'project_id'=>'required|integer|exists:projects,id',
             'activity_type_id'=>'required|integer|exists:activities_types,id'
         ];

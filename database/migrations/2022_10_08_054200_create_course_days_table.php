@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('course_days', function (Blueprint $table) {
             $table->id();
             $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
-            $table->string('date');
+            $table->date('date');
             $table->timestamps();
         });
     }

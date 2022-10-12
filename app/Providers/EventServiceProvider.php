@@ -2,17 +2,19 @@
 
 namespace App\Providers;
 
-use App\Events\IncreasePlatformJobsCount;
-use App\Events\IncreaseStudenIncome;
-use App\Events\IncreaseStudenJobs;
+use App\Events\DeleteFreelanceJob;
 use App\Events\ProjectPartnerEvent;
 use App\Events\StudentGroupEvent;
+use App\Events\UpdatePlatformJobsCount;
+use App\Events\UpdateStudentIncome;
+use App\Events\UpdateStudentJobs;
 use App\Events\UpdateStudentRate;
-use App\Listeners\IncreasePlatformJobsCountListener;
-use App\Listeners\IncreaseStudenIncomeListener;
-use App\Listeners\IncreaseStudenJobsListener;
+use App\Listeners\DeleteFreelanceJobListener;
 use App\Listeners\ProjectPartnerRelation;
 use App\Listeners\StudentGroupRelation;
+use App\Listeners\UpdatePlatformJobsCountListener;
+use App\Listeners\UpdateStudentIncomeListener;
+use App\Listeners\UpdateStudentJobsListener;
 use App\Listeners\UpdateStudentRateListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -36,14 +38,17 @@ class EventServiceProvider extends ServiceProvider
         StudentGroupEvent::class=>[
             StudentGroupRelation::class,
         ],
-        IncreaseStudenJobs::class=>[
-            IncreaseStudenJobsListener::class,
+        UpdateStudentJobs::class=>[
+            UpdateStudentJobsListener::class
         ],
-        IncreaseStudenIncome::class=>[
-            IncreaseStudenIncomeListener::class,
+        UpdateStudentIncome::class=>[
+            UpdateStudentIncomeListener::class
         ],
-        IncreasePlatformJobsCount::class=>[
-            IncreasePlatformJobsCountListener::class,
+        UpdatePlatformJobsCount::class=>[
+            UpdatePlatformJobsCountListener::class
+        ],
+        DeleteFreelanceJob::class=>[
+            DeleteFreelanceJobListener::class
         ],
         UpdateStudentRate::class=>[
             UpdateStudentRateListener::class,

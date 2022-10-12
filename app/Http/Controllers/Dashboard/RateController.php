@@ -37,7 +37,7 @@ class RateController extends Controller
     {
         $rate = Rate::create($request->all());
 
-        event(new UpdateStudentRate($rate->student_id));
+        event(new UpdateStudentRate($rate->student_id,null,null));
 
         return $this->apiResponse(new RateResource($rate),'Rate Saved!',200);
     }
@@ -67,9 +67,8 @@ class RateController extends Controller
 
         $rate->update($request->all());
 
-        if($old_rate!=$new_rate){
-            event(new UpdateStudentRate($rate->student_id));
-        }
+        event(new UpdateStudentRate($rate->student_id,$old_rate,$new_rate));
+
         return $this->apiResponse(new RateResource($rate),'Rate Updated!',200);
     }
 
@@ -82,7 +81,7 @@ class RateController extends Controller
     public function destroy(Rate $rate)
     {
         $rate->delete();
-        event(new UpdateStudentRate($rate->student_id));
+        event(new UpdateStudentRate($rate->student_id,null,null));
         return $this->apiResponse(new RateResource($rate),'Rate Deleted!',200);
     }
 }

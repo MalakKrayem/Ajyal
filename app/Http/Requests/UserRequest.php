@@ -31,7 +31,7 @@ class UserRequest extends FormRequest
             'password' => 'required|string|min:8|max:15',
             'gender'=>'required|string|in:female,male',
             'image'=>'mimes:jpg,png',
-            'phone'=>'required|numeric',
+            'phone'=>'required|numeric|unique:users,phone,'.$id,
             'overview' => 'string|max:255',
             'position_description'=>'required|string|max:255'
         ];

@@ -10,23 +10,19 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UpdateStudentIncome
+class DeleteFreelanceJob
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $salary;
-    public $student;
-    public $old_salary;
+    public $freelance;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($salary,$student,$old_salary)
+    public function __construct($freelance)
     {
-        $this->salary = $salary;
-        $this->student = $student;
-        $this->old_salary = $old_salary;
+        $this->freelance=$freelance;
     }
 
     /**

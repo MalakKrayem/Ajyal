@@ -36,9 +36,9 @@ class PartnerController extends Controller
      */
     public function store(PartnerRequest $request)
     {
-        $data = $request->except("image");
-        if ($request->hasFile("image")) {
-            $file = $request->file("image"); //return uploadedfile object
+        $data = $request->except("logo");
+        if ($request->hasFile("logo")) {
+            $file = $request->file("logo"); //return uploadedfile object
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
@@ -77,9 +77,9 @@ class PartnerController extends Controller
      */
     public function update(PartnerRequest $request, Partner $partner)
     {
-        $data = $request->except("image");
-        if ($request->hasFile("image")) {
-            $file = $request->file("image"); //return uploadedfile object
+        $data = $request->except("logo");
+        if ($request->hasFile("logo")) {
+            $file = $request->file("logo"); //return uploadedfile object
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }

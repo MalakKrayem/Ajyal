@@ -14,15 +14,19 @@ class UpdateStudentRate
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $student;
+    public $old_rate;
+    public $new_rate;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($student)
+    public function __construct($student,$old_rate,$new_rate)
     {
         $this->student=$student;
+        $this->old_rate=$old_rate;
+        $this->new_rate=$new_rate;
     }
 
     /**

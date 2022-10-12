@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Student;
 
-
+use App\Events\DeleteFreelanceJob;
 use App\Events\UpdatePlatformJobsCount;
 use App\Events\UpdateStudentIncome;
 use App\Events\UpdateStudentJobs;
@@ -11,7 +11,6 @@ use App\Http\Controllers\Dashboard\ApiResponseTrait;
 use App\Http\Requests\FreelanceRequest;
 use App\Http\Resources\FreelanceResource;
 use App\Models\Freelance;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class FreelanceController extends Controller
@@ -56,7 +55,7 @@ class FreelanceController extends Controller
         $freelance->save();
 
         event(new UpdateStudentJobs($request->input('student_id'),1));
-        event(new UpdateStudentIncome($request->input('salary'),$request->input('student_id')));
+        event(new UpdateStudentIncome($request->input('salary'),$request->input('student_id'),null));
         event(new UpdatePlatformJobsCount($request->input('platform_id'),1));
 
         return $this->apiResponse(new FreelanceResource($freelance),'Done',Response::HTTP_CREATED);
@@ -100,10 +99,8 @@ class FreelanceController extends Controller
 
         $freelance->save();
 
-        if($old_salary != $new_salary){
-            $difference=$new_salary - $old_salary;
-            event(new UpdateStudentIncome($difference,$request->input('student_id')));
-        }
+
+        event(new UpdateStudentIncome($new_salary,$request->input('student_id'),$old_salary));
 
         return $this->apiResponse(new FreelanceResource($freelance),'Done',Response::HTTP_CREATED);
     }
@@ -117,9 +114,7 @@ class FreelanceController extends Controller
     public function destroy(Freelance $freelance)
     {
         $freelance->delete();
-        event(new UpdateStudentJobs($freelance->student_id,-1));
-        event(new UpdateStudentIncome(-$freelance->salary,$freelance->student_id));
-        event(new UpdatePlatformJobsCount($freelance->platform_id,-1));
+        event(new DeleteFreelanceJob($freelance));
         return $this->apiResponse(null,'Done',Response::HTTP_OK);
     }
 }

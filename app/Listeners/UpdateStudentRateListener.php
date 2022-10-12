@@ -29,9 +29,14 @@ class UpdateStudentRateListener
     public function handle(UpdateStudentRate $event)
     {
         $student=$event->student;
-        $rate=Rate::where('student_id','=',$student)->avg('rate');
-        $student=Student::find($student);
-        $student->rate=$rate;
-        $student->save();
+        $old_rate=$event->old_rate;
+        $new_rate=$event->new_rate;
+        if(($old_rate == null && $new_rate == null) || ($old_rate != $new_rate)){
+            $rate=Rate::where('student_id','=',$student)->avg('rate');
+            $student=Student::find($student);
+            $student->rate=$rate;
+            $student->save();
+        }
+
     }
 }

@@ -28,8 +28,9 @@ class ProjectRequest extends FormRequest
             'description' => 'required|string|max:255',
             'budget'=>'numeric',
             'status'=>'string|in:draft,completed,ongoing',
-            'start_date'=>'string',
-            'end_date'=>'string',
+            'start_date'=>'date',
+            'end_date'=>'date',
+            'image'=>'mimes:jpg,png',
             'partner_id'=>'numeric|exists:partners,id',
         ];
     }

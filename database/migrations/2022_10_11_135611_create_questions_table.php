@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('landing_pages', function (Blueprint $table) {
+        Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->string('key');
-            $table->string('value');
-            $table->string('image')->nullable();
+            $table->text('question');
+            $table->text('answer');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('landing_pages');
+        Schema::dropIfExists('questions');
     }
 };

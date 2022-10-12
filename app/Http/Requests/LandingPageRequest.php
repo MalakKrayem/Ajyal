@@ -26,6 +26,7 @@ class LandingPageRequest extends FormRequest
         return [
             'key' => 'required|string',
             'value' => 'required|string',
+            'image'=>'required|string',
         ];
     }
 }

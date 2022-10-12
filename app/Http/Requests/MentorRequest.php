@@ -22,12 +22,12 @@ class MentorRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules($id=0)
     {
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => "required|email|unique:mentors,email",
+            'email' => "required|email|unique:mentors,email,".$id,
             'password' => 'required|string|min:8|max:15',
             'gender'=>'required|string|in:female,male',
             'phone'=>'required|numeric',

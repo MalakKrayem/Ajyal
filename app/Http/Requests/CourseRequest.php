@@ -27,12 +27,12 @@ class CourseRequest extends FormRequest
             'group_id'=>'required|integer|exists:groups,id',
             'mentor_id'=>'integer|exists:mentors,id',
             'title' => 'required|string|max:100',
-            'description' => 'required|string|max:255',
+            'description' => 'required|string|max:500',
             'budget'=>'numeric',
             'participants_count'=>'integer',
             'hour_count'=>'integer',
-            'start_date'=>'string',
-            'end_date'=>'string',
+            'start_date'=>'date',
+            'end_date'=>'date',
             'status'=>'string|in:draft,completed,ongoing',
 
 
