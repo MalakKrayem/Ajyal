@@ -13,7 +13,7 @@ class ProjectRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,16 +21,17 @@ class ProjectRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public static function rules()
+    public function rules()
     {
         return [
             'title' => 'required|string|max:100',
             'description' => 'required|string|max:255',
-            'image'=>'string|mims:pjpeg,png,jpg,gif,svg',
             'budget'=>'numeric',
             'status'=>'string|in:draft,completed,ongoing',
-            'start_date'=>'string',
-            'end_date'=>'string',
+            'start_date'=>'date',
+            'end_date'=>'date',
+            'image'=>'mimes:jpg,png',
+            'partner_id'=>'numeric|exists:partners,id',
         ];
     }
 }

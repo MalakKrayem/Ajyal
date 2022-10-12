@@ -18,11 +18,11 @@ return new class extends Migration
             $table->foreignId('group_id')->nullable()->constrained('groups')->nullOnDelete();
             $table->foreignId('mentor_id')->nullable()->constrained('mentors')->nullOnDelete();
             $table->string("title");
-            $table->string("description")->nullable();
+            $table->text("description")->nullable();
             $table->string('image')->nullable();
             $table->integer('hour_count')->default(0);
-            $table->string('start_date')->nullable();
-            $table->string('end_date')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->enum('status', ['draft', 'completed', 'ongoing'])->default('draft');
             $table->timestamps();
             $table->softDeletes();

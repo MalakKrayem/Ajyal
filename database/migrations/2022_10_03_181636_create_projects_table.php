@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->float('budget')->nullable();
             $table->enum('status', ['draft', 'completed', 'ongoing'])->default('draft');
-            $table->string('start_date')->nullable();
-            $table->string('end_date')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

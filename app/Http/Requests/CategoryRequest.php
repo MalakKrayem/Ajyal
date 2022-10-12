@@ -13,7 +13,7 @@ class CategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,13 +21,11 @@ class CategoryRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public static function rules()
+    public function rules()
     {
         return [
             'title' => 'required|string|max:255',
             'description' => 'string|max:500',
-            'image'=>'string|mims:pjpeg,png,jpg,gif,svg',
-
 
 
         ];

@@ -33,9 +33,8 @@ class ActivityController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ActivityRequest $request)
     {
-        $request->validate(ActivityRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object
@@ -73,9 +72,8 @@ class ActivityController extends Controller
      * @param  \App\Models\Activity  $activite
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Activity $activite)
+    public function update(ActivityRequest $request, Activity $activite)
     {
-        $request->validate(ActivityRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object

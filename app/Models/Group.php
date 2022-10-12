@@ -52,10 +52,10 @@ class Group extends Model
         return $this->hasMany(Course::class, 'group_id', 'id');
     }
 
-    // public function scopeDraft(Builder $builder)
-    // {
-    //     $builder->where('status', '=', 'draft');
-    // }
+    public function scopeDraft(Builder $builder)
+    {
+        $builder->where('status', '=', 'draft');
+    }
     public function getImageUrlAttribute()
     {
         if (!$this->image) {
@@ -99,6 +99,12 @@ class Group extends Model
                 Storage::disk('public')->delete($group->image);
             }
         });
+    }
+
+    //Relationship with Freelance
+    public function freelances()
+    {
+        return $this->hasMany(Freelance::class);
     }
 
 }

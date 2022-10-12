@@ -33,9 +33,8 @@ class AdvertisingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AdvertisingRequest $request)
     {
-        $request->validate(AdvertisingRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object
@@ -79,9 +78,8 @@ class AdvertisingController extends Controller
      * @param  \App\Models\Advertising  $advertising
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Advertising $advertising)
+    public function update(AdvertisingRequest $request, Advertising $advertising)
     {
-        $request->validate(AdvertisingRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object

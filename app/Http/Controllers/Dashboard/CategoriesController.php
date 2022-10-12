@@ -9,7 +9,6 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\Response;
 
 class CategoriesController extends Controller
 {
@@ -19,7 +18,7 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(CategoryRequest $request)
+    public function index(Request $request)
     {
         $categories = Category::filter($request->query())
         ->orderBy('categories.title')
@@ -34,20 +33,24 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $request->validate(CategoryRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
-        $file = $request->file("image"); //return uploadedfile object
-        $path = $file->store("uploads", "public");
-        $data["image_path"] = $path;
-    }
+            $file = $request->file("image"); //return uploadedfile object
+            $path = $file->store("uploads", "public");
+            $data["image_path"] = $path;
+        }
 
-        $category = Category::create($request->all());
+        $category=new Category();
+        $category->title=$request->input('title');
+        $category->description=$request->input('description');
+        if(isset($data["image_path"])){
+            $category->image =$data["image_path"];
+        }
+        $category->save();
         if($category){
-        return $this->apiResponse(new CategoryResource($category),'Category Saved!',200);
-
+            return $this->apiResponse(new CategoryResource($category),"The category saved!",201);
         }
         return $this->apiResponse(null,"The category not saved!",404);
     }
@@ -72,27 +75,25 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request , Category $category)
+    public function update(CategoryRequest $request , Category $category)
     {
-        if(!$category){
-            return $this->apiResponse(null,'Not found!',500);
-        }
-        $request->validate(CategoryRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
+
+        $category->title=$request->input('title');
+        $category->description=$request->input('description');
         if(isset($data["image_path"])){
             $category->image=$data["image_path"];
         }
-        $category->update($request->all());
-
+        $category->save();
         if($category){
-            return $this->apiResponse($category,"The category saved!",201);
+            return $this->apiResponse($category,"The category updated!",201);
         }
-        return $this->apiResponse(null,"The category not saved!",404);
+        return $this->apiResponse(null,"The category not updated!",404);
     }
 
     /**
@@ -103,22 +104,7 @@ class CategoriesController extends Controller
      */
     public function destroy(Category $category)
     {
-        if($category){
-            $category->delete();
-            return $this->apiResponse(null,"The category deleted sucessfuly!",200);
-        }else{
-            return 'not found';
-        }
-    //     $user = Auth::guard('sanctum')->user();
-    //     if (!$user->tokenCan('category.delete')) {
-    //         return response([
-    //             'message' => 'Not allowed'
-    //         ], 403);
-    //     }
-
-    //     Category::destroy($id);
-    //     return [
-    //         'message' => 'Category deleted successfully',
-    //     ];
-     }
+        $category->delete();
+        return $this->apiResponse($category,"The category deleted sucessfuly!",200);
+    }
 }

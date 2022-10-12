@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GalleryRequest extends FormRequest
+class ContactRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class GalleryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,15 +21,14 @@ class GalleryRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public static function rules()
+    public function rules()
     {
         return [
-            'course_id'=>'required|integer|exists:courses,id',
-            'description' => 'required|string|max:255',
-            'image'=>'required|string',
-
-
-
+            'name' => 'required|string|max:100',
+            'email' => 'required|email',
+            'phone' => 'required|string',
+            'subject' => 'required|string',
+            'message' => 'required|string|max:500',
         ];
     }
 }

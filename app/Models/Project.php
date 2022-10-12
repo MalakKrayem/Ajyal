@@ -27,10 +27,10 @@ class Project extends Model
         'image',
     ];
 
-    // public function scopeDraft(Builder $builder)
-    // {
-    //     $builder->where('status', '=', 'draft');
-    // }
+    public function scopeDraft(Builder $builder)
+    {
+        $builder->where('status', '=', 'draft');
+    }
     public function gruops()
     {
         return $this->hasMany(Group::class, 'project_id', 'id');
@@ -50,13 +50,12 @@ class Project extends Model
     {
 
         $builder->when($filters['title'] ?? false, function($builder, $value) {
-            $builder->where('categories.title', 'LIKE', "%{$value}%");
+            $builder->where('projects.title', 'LIKE', "%{$value}%");
         });
 
         $builder->when($filters['status'] ?? false, function($builder, $value) {
-            $builder->where('categories.status', '=', $value);
+            $builder->where('projects.status', '=', $value);
         });
-
     }
 
     public function partners()

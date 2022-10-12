@@ -13,7 +13,7 @@ class StudentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,12 +21,12 @@ class StudentRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public static function rules()
+    public function rules($id=0)
     {
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:students',
+            'email' => 'required|string|email|max:255|unique:students,email,'.$id,
             'password' => 'required|string|min:8',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,svg',
             'phone' => 'required|string|max:255|unique:students',

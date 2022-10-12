@@ -1,17 +1,17 @@
 <?php
 
 namespace App\Http\Controllers\Dashboard;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CourseRequest;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Response;
 
 class CourseController extends Controller
 {
     use ApiResponseTrait;
-
     /**
      * Display a listing of the resource.
      *
@@ -19,29 +19,8 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-
-        $courses = Course::filter($request->query());
-        // ->with('group:id,title')
-        // ->paginate();
-
-        //  return CourseResource::collection($courses);
-
-        return CourseResource::collection(Course::all());
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-
-        // $groups = Course::all();
-        // return $this->apiResponse(CourseResource::collection($groups),'Done',200);
-
+        $groups = Course::all();
+        return $this->apiResponse(CourseResource::collection($groups),'Done',200);
     }
 
     /**
@@ -50,24 +29,35 @@ class CourseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CourseRequest $request)
     {
-        $request->validate(CourseRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
-        $file = $request->file("image"); //return uploadedfile object
-        $path = $file->store("uploads", "public");
-        $data["image_path"] = $path;
-    }
-        $course = Course::create($request->all());
-        if($course){
-           return $this->apiResponse(new CourseResource($course),'course Saved!',200);
-
+            $file = $request->file("image"); //return uploadedfile object
+            $path = $file->store("uploads", "public");
+            $data["image_path"] = $path;
         }
-        return $this->apiResponse(null,"The course not saved!",404);
+
+        $course = new Course();
+        $course->title = $request->input("title");
+        $course->description = $request->input("description");
+        $course->hour_count = $request->input("hour_count");
+        $course->start_date = $request->input("start_date");
+        $course->end_date = $request->input("end_date");
+        $course->status = $request->input("status");
+        $course->mentor_id = $request->input("mentor_id");
+        $course->group_id = $request->input("group_id");
+        if(isset($data["image_path"])){
+            $course->image = $data["image_path"];
+        }
+        $course->save();
+        if($course){
+            return $this->apiResponse($course,"The Course saved!",Response::HTTP_CREATED);
+        }
+            return $this->apiResponse(null,"The Course not saved!",404);
+
+
     }
-
-
 
     /**
      * Display the specified resource.
@@ -75,11 +65,8 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course)
+    public function show( Course $course)
     {
-
-        return $course
-            ->load('group:id,title','mentor:id,first_name');
         return $this->apiResponse(new CourseResource($course),'Done',200);
     }
 
@@ -91,30 +78,31 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
-    public function update(Request $request, Course $course)
+    public function update(CourseRequest $request, Course $course)
     {
-        if(!$course){
-            return $this->apiResponse(null,'Not found!',500);
-        }
-        $request->validate(CourseRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
-            $file = $request->file("image"); //return uploadedfile object
+            $file = $request->file("image");
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
 
+        $course->title = $request->input("title");
+        $course->description = $request->input("description");
+        $course->hour_count = $request->input("hour_count");
+        $course->start_date = $request->input("start_date");
+        $course->end_date = $request->input("end_date");
+        $course->status = $request->input("status");
+        $course->mentor_id = $request->input("mentor_id");
+        $course->group_id = $request->input("group_id");
         if(isset($data["image_path"])){
             $course->image = $data["image_path"];
         }
-        $course->update($request->all());
-
+        $course->save();
         if($course){
-            return $this->apiResponse(new CourseResource($course),'Course update succeccfully!',Response::HTTP_OK);
-
+            return $this->apiResponse($course,"The Course saved!",Response::HTTP_CREATED);
         }
-            return $this->apiResponse(null,"The Course not updated!",404);
+            return $this->apiResponse(null,"The Course not saved!",404);
     }
 
     /**

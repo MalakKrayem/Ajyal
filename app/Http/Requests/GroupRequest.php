@@ -13,7 +13,7 @@ class GroupRequest extends FormRequest
      */
     public  function authorize()
     {
-
+        return true;
     }
 
     /**
@@ -21,20 +21,20 @@ class GroupRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public static function rules()
+    public function rules()
     {
         return [
             'category_id'=>'required|integer|exists:categories,id',
             'project_id'=>'integer|exists:projects,id',
             'title' => 'required|string|max:100',
-            'description' => 'required|string|max:255',
-            'image'=>'string|mims:pjpeg,png,jpg,gif,svg',
+            'description' => 'required|string|max:500',
             'budget'=>'numeric',
             'hour_count'=>'integer',
             'participants_count'=>'integer',
-            'start_date'=>'string',
-            'end_date'=>'string',
+            'start_date'=>'date',
+            'end_date'=>'date',
             'status'=>'string|in:draft,completed,ongoing',
+            'image'=>'mimes:png,jpg,jpeg',
 
         ];
     }

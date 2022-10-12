@@ -21,4 +21,9 @@ class Platform extends Model
         });
     }
 
+    //Relationship with Freelance
+    public function freelances()
+    {
+        return $this->hasMany(Freelance::class);
+    }
 }

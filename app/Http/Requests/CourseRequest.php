@@ -13,7 +13,7 @@ class CourseRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,19 +21,18 @@ class CourseRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public static function rules()
+    public function rules()
     {
         return [
             'group_id'=>'required|integer|exists:groups,id',
-            'mentor_id'=>'required|integer|exists:mentors,id',
+            'mentor_id'=>'integer|exists:mentors,id',
             'title' => 'required|string|max:100',
-            'description' => 'required|string|max:255',
-            'image'=>'string|mims:pjpeg,png,jpg,gif,svg',
+            'description' => 'required|string|max:500',
             'budget'=>'numeric',
             'participants_count'=>'integer',
             'hour_count'=>'integer',
-            'start_date'=>'string',
-            'end_date'=>'string',
+            'start_date'=>'date',
+            'end_date'=>'date',
             'status'=>'string|in:draft,completed,ongoing',
 
 

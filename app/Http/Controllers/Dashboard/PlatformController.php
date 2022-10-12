@@ -33,9 +33,8 @@ class PlatformController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PlatformRequest $request)
     {
-        $request->validate(PlatformRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object
@@ -74,9 +73,8 @@ class PlatformController extends Controller
      * @param  \App\Models\Platform  $platform
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Platform $platform)
+    public function update(PlatformRequest $request, Platform $platform)
     {
-        $request->validate(PlatformRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object

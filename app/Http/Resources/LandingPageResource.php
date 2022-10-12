@@ -15,7 +15,10 @@ class LandingPageResource extends JsonResource
     public function toArray($request)
     {
         return [
-            $this->key => $this->value,
+            $this->key => [
+                'content'=>$this->value,
+                'image'=>$this->image,
+            ],
         ];
     }
 }

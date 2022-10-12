@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Events\UpdateStudentRate;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Dashboard\ApiResponseTrait;
 use App\Http\Requests\RateRequest;
@@ -32,10 +33,12 @@ class RateController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RateRequest $request)
     {
-        $request->validate(RateRequest::rules());
         $rate = Rate::create($request->all());
+
+        event(new UpdateStudentRate($rate->student_id,null,null));
+
         return $this->apiResponse(new RateResource($rate),'Rate Saved!',200);
     }
 
@@ -57,10 +60,15 @@ class RateController extends Controller
      * @param  \App\Models\Rate  $rate
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Rate $rate)
+    public function update(RateRequest $request, Rate $rate)
     {
-        $request->validate(RateRequest::rules());
+        $old_rate=$rate->rate;
+        $new_rate=$request->input('rate');
+
         $rate->update($request->all());
+
+        event(new UpdateStudentRate($rate->student_id,$old_rate,$new_rate));
+
         return $this->apiResponse(new RateResource($rate),'Rate Updated!',200);
     }
 
@@ -73,6 +81,7 @@ class RateController extends Controller
     public function destroy(Rate $rate)
     {
         $rate->delete();
+        event(new UpdateStudentRate($rate->student_id,null,null));
         return $this->apiResponse(new RateResource($rate),'Rate Deleted!',200);
     }
 }

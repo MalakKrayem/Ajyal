@@ -34,18 +34,13 @@ class MentorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MentorRequest $request)
     {
-        $validator = Validator($request->all(), MentorRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
-        }
-
-        if ($validator->fails()) {
-            return $this->apiResponse(null, $validator->errors(), Response::HTTP_BAD_REQUEST);
         }
 
         $mentor = new Mentor();
@@ -85,18 +80,13 @@ class MentorController extends Controller
      * @param  \App\Models\Mentor  $mentor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Mentor $mentor)
+    public function update(MentorRequest $request, Mentor $mentor)
     {
-        $validator = Validator($request->all(), MentorRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
-        }
-
-        if ($validator->fails()) {
-            return $this->apiResponse(null, $validator->errors(), Response::HTTP_BAD_REQUEST);
         }
 
         $mentor->first_name = $request->input("first_name");

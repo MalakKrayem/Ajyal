@@ -13,7 +13,7 @@ class LandingPageRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,11 +21,12 @@ class LandingPageRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public static function rules()
+    public function rules()
     {
         return [
             'key' => 'required|string',
             'value' => 'required|string',
+            'image'=>'required|string',
         ];
     }
 }

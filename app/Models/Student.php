@@ -12,6 +12,20 @@ use Laravel\Sanctum\HasApiTokens;
 class Student extends Authenticatable
 {
     use HasFactory,HasApiTokens,Notifiable;
+    protected $fillable=[
+        'first_name',
+        'last_name',
+        'email',
+        'password',
+        'image',
+        'phone',
+        'address',
+        'rate',
+        'transport',
+        'status',
+        'total_income',
+        'total_jobs',
+    ];
     public function getFullNameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name;
@@ -31,5 +45,13 @@ class Student extends Authenticatable
 
     public function groups(){
         return $this->belongsToMany(Group::class,'student_group','student_id','group_id');
+    }
+    public function attendences()
+    {
+        return $this->hasMany(Attendence::class, 'student_id', 'id');
+    }
+    public function freelances()
+    {
+        return $this->hasMany(Freelance::class);
     }
 }

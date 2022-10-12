@@ -18,9 +18,9 @@ return new class extends Migration
             $table->foreignId('project_id')->nullable()->constrained('projects')->nullOnDelete();
             $table->foreignId('activity_type_id')->nullable()->constrained('activities_types')->nullOnDelete();
             $table->string('title');
-            $table->string('description');
+            $table->text('description');
             $table->string('image')->nullable();
-            $table->string('date');
+            $table->date('date');
             $table->timestamps();
         });
     }

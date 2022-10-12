@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Events\ProjectPartnerEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
-use App\Http\Controllers\Dashboard;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class ProjectController extends Controller
 {
     use ApiResponseTrait;
-
      /**
      * Display a listing of the resource.
      *
@@ -39,22 +37,34 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProjectRequest $request)
     {
-        $request->validate(ProjectRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
-        $file = $request->file("image"); //return uploadedfile object
-        $path = $file->store("uploads", "public");
-        $data["image_path"] = $path;
-    }
-
-       $project = Project::create($request->all());
-       if($project){
-        return $this->apiResponse(new ProjectResource($project),'project added successfully!',Response::HTTP_CREATED);
+            $file = $request->file("image");
+            $path = $file->store("uploads", "public");
+            $data["image_path"] = $path;
         }
-        return $this->apiResponse(null,'Error',Response::HTTP_INTERNAL_SERVER_ERROR);
-}
+
+        $project = new Project();
+        $project->title = $request->input("title");
+        $project->description = $request->input("description");
+        $project->budget = $request->input("budget");
+        $project->status = $request->input("status");
+        $project->start_date = $request->input("start_date");
+        $project->end_date = $request->input("end_date");
+        if(isset($data["image_path"])){
+            $project->image = $data["image_path"];
+        }
+        $project->save();
+
+        event(new ProjectPartnerEvent($project->id,$request->input("partner_id")));
+
+        if($project){
+            return $this->apiResponse($project,"The project saved!",201);
+        }
+            return $this->apiResponse(null,"The project not saved!",404);
+    }
 
     /**
      * Display the specified resource.
@@ -76,28 +86,29 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(ProjectRequest $request, Project $project)
     {
-        if(!$project){
-            return $this->apiResponse(null,'Not found!',500);
-        }
-        $request->validate(ProjectRequest::rules());
         $data = $request->except("image");
         if ($request->hasFile("image")) {
-            $file = $request->file("image"); //return uploadedfile object
+            $file = $request->file("image");
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
-        if(isset($data["image_path"])){
 
+        $project->title = $request->input("title");
+        $project->description = $request->input("description");
+        $project->budget = $request->input("budget");
+        $project->start_date = $request->input("start_date");
+        $project->end_date = $request->input("end_date");
+        $project->status = $request->input("status");
+        if(isset($data["image_path"])){
             $project->image = $data["image_path"];
         }
-        $project->update($request->all());
+        $project->save();
         if($project){
-            return $this->apiResponse(new ProjectResource($project),'project update succeccfully!',Response::HTTP_OK);
-
+            return $this->apiResponse($project,"The project saved!",201);
         }
-            return $this->apiResponse(null,"The project not updated!",404);
+            return $this->apiResponse(null,"The project not saved!",404);
         }
 
     /**

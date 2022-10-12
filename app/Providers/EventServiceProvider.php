@@ -2,10 +2,20 @@
 
 namespace App\Providers;
 
+use App\Events\DeleteFreelanceJob;
 use App\Events\ProjectPartnerEvent;
 use App\Events\StudentGroupEvent;
+use App\Events\UpdatePlatformJobsCount;
+use App\Events\UpdateStudentIncome;
+use App\Events\UpdateStudentJobs;
+use App\Events\UpdateStudentRate;
+use App\Listeners\DeleteFreelanceJobListener;
 use App\Listeners\ProjectPartnerRelation;
 use App\Listeners\StudentGroupRelation;
+use App\Listeners\UpdatePlatformJobsCountListener;
+use App\Listeners\UpdateStudentIncomeListener;
+use App\Listeners\UpdateStudentJobsListener;
+use App\Listeners\UpdateStudentRateListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -27,7 +37,22 @@ class EventServiceProvider extends ServiceProvider
         ],
         StudentGroupEvent::class=>[
             StudentGroupRelation::class,
-        ]
+        ],
+        UpdateStudentJobs::class=>[
+            UpdateStudentJobsListener::class
+        ],
+        UpdateStudentIncome::class=>[
+            UpdateStudentIncomeListener::class
+        ],
+        UpdatePlatformJobsCount::class=>[
+            UpdatePlatformJobsCountListener::class
+        ],
+        DeleteFreelanceJob::class=>[
+            DeleteFreelanceJobListener::class
+        ],
+        UpdateStudentRate::class=>[
+            UpdateStudentRateListener::class,
+        ],
 
     ];
 

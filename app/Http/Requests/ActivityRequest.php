@@ -13,7 +13,7 @@ class ActivityRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,13 +21,13 @@ class ActivityRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public static function rules()
+    public function rules()
     {
         return [
             'title'=>'required|string|max:255',
             'description'=>'required|string|max:1000',
             'image'=>'image|mimes:jpeg,png,jpg,svg',
-            'date'=>'required|string',
+            'date'=>'required|date',
             'project_id'=>'required|integer|exists:projects,id',
             'activity_type_id'=>'required|integer|exists:activities_types,id'
         ];
