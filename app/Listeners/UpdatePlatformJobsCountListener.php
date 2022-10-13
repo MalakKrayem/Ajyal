@@ -27,6 +27,7 @@ class UpdatePlatformJobsCountListener
      */
     public function handle(UpdatePlatformJobsCount $event)
     {
+        //Multiple events type
         $platform=$event->platform;
         $value=$event->value;
         $platform=Platform::find($platform);

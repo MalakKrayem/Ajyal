@@ -16,8 +16,7 @@ return new class extends Migration
         Schema::create('landing_pages', function (Blueprint $table) {
             $table->id();
             $table->string('key');
-            $table->string('value');
-            $table->string('image')->nullable();
+            $table->text('value');
             $table->timestamps();
         });
     }
