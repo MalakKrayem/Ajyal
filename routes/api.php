@@ -36,14 +36,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('auth/{guard}/access-token', [AccessTokenController::class, 'store'])->middleware('guest:sanctum');
-Route::apiResource('users',UserController::class);
+Route::get('landing-page', [LandingPageController::class, 'index']);
 
 Route::middleware('auth:sanctum')->prefix('dashboard')->group(function(){
+    Route::apiResource('users',UserController::class);
     Route::apiResource('mentors',MentorController::class);
     Route::delete('auth/access-token/{token?}', [AccessTokenController::class, 'destroy']);
     Route::apiResource('categories', CategoriesController::class);
     Route::post('landing-page', [LandingPageController::class, 'store']);
-    Route::get('landing-page', [LandingPageController::class, 'index']);
     Route::apiResource('platforms', PlatformController::class);
     Route::apiResource('partners', PartnerController::class);
     Route::apiResource('advertisings', AdvertisingController::class);
