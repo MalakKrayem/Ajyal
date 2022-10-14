@@ -22,7 +22,6 @@ class LandingPageController extends Controller
 
     public function index(){
         $landingPage = LandingPageResource::collection(LandingPage::all());
-        $advertisings=Advertising::published()->get();
         $partners=Partner::all();
         $members=User::all();
         $activites=Activity::all();
@@ -43,23 +42,22 @@ class LandingPageController extends Controller
 
     public function store(LandingPageRequest $request)
     {
-        $data = $request->except("image");
-        if ($request->hasFile("image")) {
-            $file = $request->file("image");
-            $path = $file->store("uploads", "public");
-            $data["image_path"] = $path;
+        $data=json_decode($request->getContent(), true);
+        $images=[];
+        foreach ($data as $key=>$value){
+            $content=$value['content'];
+            foreach ($value['images'] as $image){
+                // $file = $image; //return uploadedfile object
+                // $path = $file->store("uploads", "public");
+                // $data["image_path"] = $path;
+                //$images[]=$data["image_path"];
+            }
+            $data=["content"=>$content,"images"=>$images];
+            $landingPage = LandingPage::updateOrCreate(['key' => $key], [
+                'value' => $data,
+            ]);
+            $landingPage->save();
         }
-        // if(isset($data["image_path"])){
-        //     $request->image=$data["image_path"];
-        // }else{
-        //     $request->image='no Image';
-        // }
-
-        $landingPage = LandingPage::updateOrCreate(['key' => $request->key], [
-            'value' => $request->value,
-            'image' => $data["image_path"] ?? 'no Image',
-        ]);
-        $landingPage->save();
-        return $this->apiResponse(new LandingPageResource($landingPage), 'Done', 201);
+        return $this->apiResponse($landingPage, 'Done', 201);
     }
 }

@@ -29,6 +29,7 @@ class GroupController extends Controller
 
     public function store(GroupRequest $request)
     {
+
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image");
@@ -55,7 +56,7 @@ class GroupController extends Controller
             return $this->apiResponse($group,"The group saved!",201);
         }
             return $this->apiResponse(null,"The group not saved!",404);
-        }
+    }
 
     /**
      * Display the specified resource.

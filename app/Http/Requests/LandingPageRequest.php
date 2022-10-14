@@ -24,9 +24,8 @@ class LandingPageRequest extends FormRequest
     public function rules()
     {
         return [
-            'key' => 'required|string',
-            'value' => 'required|string',
-            'image'=>'required|string',
+            // 'key' => 'required|string',
+            // 'value' => 'required',
         ];
     }
 }
