@@ -37,8 +37,10 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
+        //return $request;
 
         $data = $request->except("image");
+
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object
             $path = $file->store("uploads", "public");
@@ -85,6 +87,7 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user)
     {
         $data = $request->except("image");
+
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object
             $path = $file->store("uploads", "public");
@@ -98,15 +101,14 @@ class UserController extends Controller
         $user->overview = $request->input('overview');
         $user->position_description = $request->input('position_description');
         $user->phone = $request->input('phone');
-        $user->password = Hash::make($request->input("password"));
         if(isset($data["image_path"])){
             $user->image = $data["image_path"];
         }
         $user->save();
         if($user){
-            return $this->apiResponse(new UserResource($user),"The user updated!",201);
+            return $this->apiResponse(new UserResource($user),"The user saved!",201);
         }
-        return $this->apiResponse(null,"The user didn't update!",404);
+        return $this->apiResponse(null,"The user not saved!",404);
     }
 
     /**

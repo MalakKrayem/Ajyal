@@ -53,7 +53,7 @@ class GroupController extends Controller
         }
         $group->save();
         if($group){
-            return $this->apiResponse($group,"The group saved!",201);
+            return $this->apiResponse(new GroupResource($group),"The group saved!",201);
         }
             return $this->apiResponse(null,"The group not saved!",404);
     }
@@ -100,7 +100,7 @@ class GroupController extends Controller
         }
         $group->update();
         if($group){
-            return $this->apiResponse($group,"The group updated!",201);
+            return $this->apiResponse(new GroupResource($group),"The group updated!",201);
         }
             return $this->apiResponse(null,"The group not updated!",404);
     }

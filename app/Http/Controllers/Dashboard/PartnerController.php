@@ -91,7 +91,6 @@ class PartnerController extends Controller
 
         $partner->save();
 
-        event(new ProjectPartnerEvent($request->input("project_id"),$partner->id));
 
         if($partner){
             return $this->apiResponse(new PartnerResource($partner),'Partner updated successfully!',Response::HTTP_OK);

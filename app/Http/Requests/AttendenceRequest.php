@@ -24,10 +24,10 @@ class AttendenceRequest extends FormRequest
     public function rules()
     {
         return [
-            'course_id' => 'required|exists:courses,id',
-            'date' => 'required|string',
-            'status' => 'required|in:attend,absent',
-            'student_id' => 'required|exists:students,id',
+            // 'course_id' => 'required|exists:courses,id',
+            // 'date' => 'required|string',
+            // 'status' => 'required|in:attend,absent',
+            // 'student_id' => 'required|exists:students,id',
         ];
     }
 }

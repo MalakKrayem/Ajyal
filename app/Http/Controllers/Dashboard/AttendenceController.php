@@ -18,9 +18,9 @@ class AttendenceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, $CourseDay)
     {
-        $attendences = AttendenceResource::collection(Attendence::filter(request()->all())->get());
+        $attendences = AttendenceResource::collection(Attendence::where("course_days_id",$CourseDay)->filter($request->query())->get());
         return $this->apiResponse($attendences,'Done',Response::HTTP_OK);
     }
 
@@ -32,15 +32,20 @@ class AttendenceController extends Controller
      */
     public function store(AttendenceRequest $request)
     {
+        $data=json_decode($request->getContent(), true);
+
         $courseDay=new CourseDay();
-        $courseDay->course_id=$request->input('course_id');
-        $courseDay->date=$request->input('date');
+        $courseDay->course_id=$data['course_id'];
+        $courseDay->date=$data['date'];
         $courseDay->save();
-        $attendence=new Attendence();
-        $attendence->course_days_id=$courseDay->id;
-        $attendence->student_id=$request->input('student_id');
-        $attendence->status=$request->input('status');
-        $attendence->save();
+
+        foreach($data['students'] as $id=>$status){
+            $attendence=new Attendence();
+            $attendence->course_days_id=$courseDay->id;
+            $attendence->student_id=$id;
+            $attendence->status=$status;
+            $attendence->save();
+        }
         return $this->apiResponse($attendence,'Saved',Response::HTTP_CREATED);
     }
 
@@ -64,14 +69,20 @@ class AttendenceController extends Controller
      */
     public function update(AttendenceRequest $request, Attendence $attendence)
     {
+        $data=json_decode($request->getContent(), true);
+
         $courseDay=CourseDay::find($attendence->course_days_id);
-        $courseDay->course_id=$request->input('course_id');
-        $courseDay->date=$request->input('date');
+        $courseDay->course_id=$data['course_id'];
+        $courseDay->date=$data['date'];
         $courseDay->save();
-        $attendence->course_days_id=$courseDay->id;
-        $attendence->student_id=$request->input('student_id');
-        $attendence->status=$request->input('status');
-        $attendence->save();
+
+        foreach($data['students'] as $id=>$status){
+            $attendence->course_days_id=$courseDay->id;
+            $attendence->student_id=$id;
+            $attendence->status=$status;
+            $attendence->save();
+        }
+
         return $this->apiResponse($attendence,'Updated!',Response::HTTP_CREATED);
 
     }

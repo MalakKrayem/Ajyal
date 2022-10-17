@@ -26,17 +26,6 @@ class Attendence extends Model
         $builder->when($filters['status'] ?? false, function($builder, $value) {
             $builder->where('attendences.status', '=', $value);
         });
-        $builder->when($filters['course_id'] ?? false, function($builder, $value) {
-            $builder->whereExists(function ($query) use ($value) {
-                $query->select(DB::raw(1))
-                    ->from('course_days')
-                    ->whereRaw('course_days.id = attendences.course_days_id')
-                    ->where('course_days.course_id', '=', $value);
-            });
-        });
-        $builder->when($filters['date'] ?? false, function($builder, $value) {
-            $builder->where('course_days.date', '=', $value);
-        });
     }
 
     public function course_day()

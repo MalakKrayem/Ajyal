@@ -30,7 +30,7 @@ class UserRequest extends FormRequest
             'email' => "required|email|unique:users,email,".$id,
             'password' => 'required|string|min:8|max:15',
             'gender'=>'required|string|in:female,male',
-            'image'=>'mimes:jpg,png',
+            'image'=>'required|mimes:jpg,png',
             'phone'=>'required|numeric|unique:users,phone,'.$id,
             'overview' => 'string|max:255',
             'position_description'=>'required|string|max:255'

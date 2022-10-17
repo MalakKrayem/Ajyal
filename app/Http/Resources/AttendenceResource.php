@@ -15,8 +15,6 @@ class AttendenceResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'course'=>$this->course_day->course->title,
-            'date'=>$this->course_day->date,
             'student'=>$this->student->full_name,
             'status'=>$this->status,
         ];

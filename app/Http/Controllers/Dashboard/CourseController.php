@@ -52,7 +52,7 @@ class CourseController extends Controller
         }
         $course->save();
         if($course){
-            return $this->apiResponse($course,"The Course saved!",Response::HTTP_CREATED);
+            return $this->apiResponse(new CourseResource($course),"The Course saved!",Response::HTTP_CREATED);
         }
             return $this->apiResponse(null,"The Course not saved!",404);
 
@@ -100,7 +100,7 @@ class CourseController extends Controller
         }
         $course->save();
         if($course){
-            return $this->apiResponse($course,"The Course saved!",Response::HTTP_CREATED);
+            return $this->apiResponse(new CourseResource($course),"The Course saved!",Response::HTTP_CREATED);
         }
             return $this->apiResponse(null,"The Course not saved!",404);
     }

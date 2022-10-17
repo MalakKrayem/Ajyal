@@ -56,6 +56,7 @@ class LandingPageController extends Controller
             $landingPage = LandingPage::updateOrCreate(['key' => $key], [
                 'value' => $data,
             ]);
+            
             $landingPage->save();
         }
         return $this->apiResponse($landingPage, 'Done', 201);

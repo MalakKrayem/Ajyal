@@ -7,6 +7,7 @@ use App\Http\Controllers\Dashboard\AdvertisingController;
 use App\Http\Controllers\Dashboard\AttendenceController;
 use App\Http\Controllers\Dashboard\CategoriesController;
 use App\Http\Controllers\Dashboard\CourseController;
+use App\Http\Controllers\Dashboard\CourseDayController;
 use App\Http\Controllers\Dashboard\GroupController;
 use App\Http\Controllers\Dashboard\MentorController;
 use App\Http\Controllers\Dashboard\PartnerController;
@@ -56,6 +57,8 @@ Route::middleware('auth:sanctum')->prefix('dashboard')->group(function(){
     Route::apiResource('students', StudentController::class);
     Route::apiResource('rates', RateController::class);
     Route::apiResource('attendences', AttendenceController::class);
+    Route::get('{courseDay}/attendences',[AttendenceController::class,'index']);
+    Route::apiResource('courses-days', CourseDayController::class);
     Route::apiResource('questions', QuestionController::class);
 });
 Route::middleware('auth:sanctum')->prefix('student')->group(function(){

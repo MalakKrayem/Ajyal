@@ -26,7 +26,7 @@ class PlatformRequest extends FormRequest
         return [
             'name'=>'required|string',
             'job_count'=>'integer',
-            'image'=>'string|mims:pjpeg,png,jpg,gif,svg',
+            'image'=>'mimes:pjpeg,png,jpg,gif,svg',
         ];
     }
 }

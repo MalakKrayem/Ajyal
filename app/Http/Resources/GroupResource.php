@@ -25,16 +25,16 @@ class GroupResource extends JsonResource
             'status'=>$this->status,
             'start_date'=>$this->start_date,
             'end_date'=>$this->end_date,
-            // 'relations' => [
-            //     'category' => [
-            //         'id' => $this->category->id,
-            //         'name' => $this->category->title,
-            //     ],
-            //     'project' => [
-            //         'id' => $this->project->id,
-            //         'name' => $this->project->title,
-            //     ],
-            //],
+            'relations' => [
+                'category' => [
+                    'id' => $this->category->id,
+                    'name' => $this->category->title,
+                ],
+                'project' => [
+                    'id' => $this->project->id,
+                    'name' => $this->project->title,
+                ],
+            ],
         ];
     }
 }

@@ -91,7 +91,7 @@ class CategoriesController extends Controller
         }
         $category->save();
         if($category){
-            return $this->apiResponse($category,"The category updated!",201);
+            return $this->apiResponse(new CategoryResource($category),"The category updated!",201);
         }
         return $this->apiResponse(null,"The category not updated!",404);
     }

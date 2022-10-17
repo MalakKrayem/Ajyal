@@ -18,7 +18,7 @@ class PlatformResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'jobs_count' => $this->jobs_count,
-            'image' => $this->image,
+            'image' => $this->image_url,
         ];
     }
 }

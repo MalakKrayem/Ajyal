@@ -12,6 +12,16 @@ class CourseDay extends Model
         'course_id',
         'date',
     ];
+    //filter for course_id and date
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['course_id'] ?? false, function ($query, $course_id) {
+            $query->where('course_id', $course_id);
+        });
+        $query->when($filters['date'] ?? false, function ($query, $date) {
+            $query->where('date', $date);
+        });
+    }
 
     //relation with course
     public function course()

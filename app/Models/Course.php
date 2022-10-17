@@ -29,7 +29,6 @@ class Course extends Model
     ];
 
     protected $hidden = [
-        'image',
         'created_at', 'updated_at', 'deleted_at',
     ];
 
@@ -85,6 +84,6 @@ class Course extends Model
         return $this->hasMany(CourseDay::class, 'course_id', 'id');
     }
     //relation with attendence
-    
+
 
 }

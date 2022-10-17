@@ -23,9 +23,7 @@ class Project extends Model
         'start_date',
         'end_date',
     ];
-    protected $hidden = [
-        'image',
-    ];
+    
 
     public function scopeDraft(Builder $builder)
     {

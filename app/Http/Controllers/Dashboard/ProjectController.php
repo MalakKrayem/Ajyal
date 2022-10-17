@@ -61,7 +61,7 @@ class ProjectController extends Controller
         event(new ProjectPartnerEvent($project->id,$request->input("partner_id")));
 
         if($project){
-            return $this->apiResponse($project,"The project saved!",201);
+            return $this->apiResponse(new ProjectResource($project),"The project saved!",201);
         }
             return $this->apiResponse(null,"The project not saved!",404);
     }
@@ -106,7 +106,7 @@ class ProjectController extends Controller
         }
         $project->save();
         if($project){
-            return $this->apiResponse($project,"The project saved!",201);
+            return $this->apiResponse(new ProjectResource($project),"The project saved!",201);
         }
             return $this->apiResponse(null,"The project not saved!",404);
         }
