@@ -14,4 +14,15 @@ class Rate extends Model
         'rate',
         'notes',
     ];
+
+    //Relation with student
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
+    //Relation with course
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
 }

@@ -37,7 +37,7 @@ class Course extends Model
     ];
     public function group()
     {
-        return $this->belongsTo(Group::class, 'group_id', 'id');
+        return $this->belongsTo(Group::class, 'group_id', 'id')->withDefault();
     }
 
     // public function mentor()
@@ -81,9 +81,18 @@ class Course extends Model
     //relation with course day
     public function course_days()
     {
-        return $this->hasMany(CourseDay::class, 'course_id', 'id');
+        return $this->hasMany(CourseDay::class, 'course_id', 'id')->withDefault();
     }
-    //relation with attendence
+    //relation with rate
+    public function rates()
+    {
+        return $this->hasMany(Rate::class, 'course_id', 'id')->withDefault();
+    }
 
+    //Relation with mentor
+    public function mentor()
+    {
+        return $this->belongsTo(Mentor::class, 'mentor_id', 'id')->withDefault();
+    }
 
 }

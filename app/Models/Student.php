@@ -54,4 +54,10 @@ class Student extends Authenticatable
     {
         return $this->hasMany(Freelance::class);
     }
+
+    //Relation with rate
+    public function rates()
+    {
+        return $this->hasMany(Rate::class);
+    }
 }

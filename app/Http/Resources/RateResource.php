@@ -15,8 +15,8 @@ class RateResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'student_id' => $this->student_id,
-            'course_id' => $this->course_id,
+            'student_id' => $this->student->full_name,
+            'course_id' => $this->course->title,
             'rate' => $this->rate,
             'notes' => $this->notes,
         ];

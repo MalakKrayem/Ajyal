@@ -49,4 +49,10 @@ class Mentor extends Authenticatable
             }
         });
     }
+
+    //Relation with courses
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
 }

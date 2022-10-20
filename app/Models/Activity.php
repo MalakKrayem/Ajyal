@@ -47,4 +47,6 @@ class Activity extends Model
             }
         });
     }
+
+
 }
