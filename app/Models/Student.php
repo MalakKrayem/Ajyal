@@ -48,16 +48,16 @@ class Student extends Authenticatable
     }
     public function attendences()
     {
-        return $this->hasMany(Attendence::class, 'student_id', 'id');
+        return $this->hasMany(Attendence::class, 'student_id', 'id')->withDefault();
     }
     public function freelances()
     {
-        return $this->hasMany(Freelance::class);
+        return $this->hasMany(Freelance::class)->withDefault();
     }
 
     //Relation with rate
     public function rates()
     {
-        return $this->hasMany(Rate::class);
+        return $this->hasMany(Rate::class)->withDefault();
     }
 }

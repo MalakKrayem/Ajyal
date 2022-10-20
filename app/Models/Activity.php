@@ -31,11 +31,11 @@ class Activity extends Model
     }
     public function project()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class)->withDefault();
     }
     public function activityType()
     {
-        return $this->belongsTo(ActivitiesType::class);
+        return $this->belongsTo(ActivitiesType::class)->withDefault();
     }
     //Deleted observer
     public static function boot()

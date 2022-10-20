@@ -23,7 +23,7 @@ class Project extends Model
         'start_date',
         'end_date',
     ];
-    
+
 
     public function scopeDraft(Builder $builder)
     {
@@ -58,11 +58,11 @@ class Project extends Model
 
     public function partners()
     {
-        return $this->belongsToMany(Partner::class,'project_partner');
+        return $this->belongsToMany(Partner::class,'project_partner')->withDefault();
     }
     public function activities()
     {
-        return $this->hasMany(Activity::class);
+        return $this->hasMany(Activity::class)->withDefault();
     }
     //Deleted Observer
     public static function boot()

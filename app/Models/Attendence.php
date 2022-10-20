@@ -30,11 +30,11 @@ class Attendence extends Model
 
     public function course_day()
     {
-        return $this->belongsTo(CourseDay::class, 'course_days_id', 'id');
+        return $this->belongsTo(CourseDay::class, 'course_days_id', 'id')->withDefault();
     }
     public function student()
     {
-        return $this->belongsTo(Student::class, 'student_id', 'id');
+        return $this->belongsTo(Student::class, 'student_id', 'id')->withDefault();
     }
     //relation with course
 

@@ -39,17 +39,17 @@ class Group extends Model
     ];
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        return $this->belongsTo(Category::class, 'category_id', 'id')->withDefault();
     }
 
     public function project()
     {
-        return $this->belongsTo(Project::class, 'project_id', 'id');
+        return $this->belongsTo(Project::class, 'project_id', 'id')->withDefault();
     }
 
     public function courses()
     {
-        return $this->hasMany(Course::class, 'group_id', 'id');
+        return $this->hasMany(Course::class, 'group_id', 'id')->withDefault();
     }
 
     public function scopeDraft(Builder $builder)
@@ -104,7 +104,7 @@ class Group extends Model
     //Relationship with Freelance
     public function freelances()
     {
-        return $this->hasMany(Freelance::class);
+        return $this->hasMany(Freelance::class)->withDefault();
     }
 
 }

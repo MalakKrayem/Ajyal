@@ -25,17 +25,17 @@ class Freelance extends Model
 
     public function platform()
     {
-        return $this->belongsTo(Platform::class);
+        return $this->belongsTo(Platform::class)->withDefault();
     }
 
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class)->withDefault();
     }
 
     public function group()
     {
-        return $this->belongsTo(Group::class);
+        return $this->belongsTo(Group::class)->withDefault();
     }
     //Filter
     public function scopeFilter(Builder $builder, $filters)

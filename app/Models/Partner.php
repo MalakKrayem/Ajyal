@@ -27,7 +27,7 @@ class Partner extends Model
 
     public function projects()
     {
-        return $this->belongsToMany(Project::class,'project_partner');
+        return $this->belongsToMany(Project::class,'project_partner')->withDefault();
     }
 
     //Delete Observer

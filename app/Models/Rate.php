@@ -18,11 +18,11 @@ class Rate extends Model
     //Relation with student
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class)->withDefault();
     }
     //Relation with course
     public function course()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Course::class)->withDefault();
     }
 }

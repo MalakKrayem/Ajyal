@@ -40,11 +40,6 @@ class Course extends Model
         return $this->belongsTo(Group::class, 'group_id', 'id')->withDefault();
     }
 
-    // public function mentor()
-    // {
-    //     return $this->belongsTo(Mentor::class, 'mentor_id', 'id');
-    // }
-
     public function scopeDraft(Builder $builder)
     {
         $builder->where('status', '=', 'draft');
