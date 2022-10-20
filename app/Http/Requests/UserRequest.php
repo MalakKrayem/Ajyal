@@ -22,15 +22,16 @@ class UserRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules($id=0)
+    public function rules()
     {
+        $id=$this->route('user');
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => "required|email|unique:users,email,".$id,
             'password' => 'required|string|min:8|max:15',
             'gender'=>'required|string|in:female,male',
-            'image'=>'required|mimes:jpg,png',
+            'image'=>'mimes:jpg,png',
             'phone'=>'required|numeric|unique:users,phone,'.$id,
             'overview' => 'string|max:255',
             'position_description'=>'required|string|max:255'

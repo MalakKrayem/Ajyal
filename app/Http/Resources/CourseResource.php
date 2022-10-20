@@ -23,17 +23,8 @@ class CourseResource extends JsonResource
             'status'=>$this->status,
             'start_date'=>$this->start_date,
             'end_date'=>$this->end_date,
-            'relations' => [
-                'project' => [
-                    'id' => $this->project->id,
-                    'name' => $this->project->title,
-                ],
-                'mentor' => [
-                    'id' => $this->mentor->id,
-                    'name' => $this->mentor->title,
-                ],
-            ],
-
+            "project"=>$this->project->title,
+            "mentor"=>$this->mentor->full_name,
         ];
         }
 }

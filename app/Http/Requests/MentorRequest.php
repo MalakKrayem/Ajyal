@@ -22,15 +22,16 @@ class MentorRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules($id=0)
+    public function rules()
     {
+        $id=$this->route('mentor');
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => "required|email|unique:mentors,email,".$id,
             'password' => 'required|string|min:8|max:15',
             'gender'=>'required|string|in:female,male',
-            'phone'=>'required|numeric',
+            'phone'=>'required|numeric|unique:mentors,phone,'.$id,
             'image'=>'mimes:jpg,png',
             'overview' => 'string|max:255',
         ];

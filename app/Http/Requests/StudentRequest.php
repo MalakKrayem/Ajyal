@@ -21,15 +21,16 @@ class StudentRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules($id=0)
+    public function rules()
     {
+        $id=$this->route('student');
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:students,email,'.$id,
             'password' => 'required|string|min:8',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,svg',
-            'phone' => 'required|string|max:255|unique:students',
+            'phone' => 'required|string|max:255|unique:students,phone,'.$id,
             'address' => 'required|string|max:255',
             'rate' => 'integer|min:0',
             'transport' => 'integer|min:0',
