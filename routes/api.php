@@ -15,10 +15,12 @@ use App\Http\Controllers\Dashboard\PlatformController;
 use App\Http\Controllers\Dashboard\ProjectController;
 use App\Http\Controllers\Dashboard\RateController;
 use App\Http\Controllers\Dashboard\StudentController;
+use App\Http\Controllers\Dashboard\StudentGroupController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\LandingPage\LandingPageController;
 use App\Http\Controllers\LandingPage\QuestionController;
 use App\Http\Controllers\Student\FreelanceController;
+use App\Models\StudentGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +62,8 @@ Route::middleware('auth:sanctum')->prefix('dashboard')->group(function(){
     Route::get('{courseDay}/attendences',[AttendenceController::class,'index']);
     Route::apiResource('courses-days', CourseDayController::class);
     Route::apiResource('questions', QuestionController::class);
+    Route::post('add-student',[StudentGroupController::class,'store']);
+    Route::post('avaliable-students',[StudentGroupController::class,'showStudents']);
 });
 Route::middleware('auth:sanctum')->prefix('student')->group(function(){
     Route::apiResource('freelances',FreelanceController::class);

@@ -25,12 +25,13 @@ class LandingPageController extends Controller
         $partners=Partner::all();
         $members=User::all();
         $activites=Activity::all();
+        $advertisings=Advertising::all();
         $traning_statistic=GroupLandingResource::collection(Group::all());
         $groups=Group::all();
         $questions=Question::all();
         return $this->apiResponse([
             'pageContent'=>$landingPage,
-            //'advertisings'=>$advertisings,
+            'advertisings'=>$advertisings,
             'partners'=>$partners,
             'traning_statistic'=>$traning_statistic,
             'members'=>$members,

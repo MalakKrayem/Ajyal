@@ -25,6 +25,8 @@ class GroupResource extends JsonResource
             'status'=>$this->status,
             'start_date'=>$this->start_date,
             'end_date'=>$this->end_date,
+            'category_id'=>$this->category_id,
+            'project_id'=>$this->project_id,
             'category'=>$this->category->title,
             'project'=>$this->project->title,
         ];

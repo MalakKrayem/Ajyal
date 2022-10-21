@@ -11,6 +11,4 @@ class StudentGroup extends Pivot
     use HasFactory;
     protected $table = 'student_group';
     protected $fillable = ['group_id','student_id'];
-
-
 }

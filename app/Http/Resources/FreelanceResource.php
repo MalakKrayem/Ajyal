@@ -16,9 +16,12 @@ class FreelanceResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'platform_id' => $this->platform->name,
-            'student_id' => $this->student->full_name,
-            'group_id' => $this->group->title,
+            'platform_id' => $this->platform_id,
+            'student_id' => $this->student_id,
+            'group_id' => $this->group_id,
+            'platform' => $this->platform->name,
+            'student' => $this->student->full_name,
+            'group' => $this->group->title,
             'job_title' => $this->job_title,
             'job_description' => $this->job_description,
             'job_link' => $this->job_link,
