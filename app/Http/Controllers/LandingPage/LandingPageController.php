@@ -47,16 +47,20 @@ class LandingPageController extends Controller
         foreach ($data as $key=>$value){
             $content=$value['content'];
             foreach ($value['images'] as $image){
-                // $file = $image; //return uploadedfile object
-                // $path = $file->store("uploads", "public");
-                // $data["image_path"] = $path;
-                //$images[]=$data["image_path"];
+                if ($image->hasFile("image")) {
+                    $file = $image->file("image"); //return uploadedfile object
+                    $path = $file->store("uploads", "public");
+                    $image_path = $path;
+                }
+                if(isset($data["image_path"])){
+                    $images[] = $image_path;
+                }
             }
             $data=["content"=>$content,"images"=>$images];
             $landingPage = LandingPage::updateOrCreate(['key' => $key], [
                 'value' => $data,
             ]);
-            
+
             $landingPage->save();
         }
         return $this->apiResponse($landingPage, 'Done', 201);

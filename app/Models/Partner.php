@@ -11,7 +11,11 @@ class Partner extends Model
 {
     use HasFactory;
     protected $fillable = ['name','description','logo'];
-    protected $hidden = ['created_at','updated_at'];
+    protected $hidden = ['created_at','updated_at','logo'];
+
+    protected $appends = [
+        'logo_url',
+    ];
 
     public function getlogoUrlAttribute()
     {

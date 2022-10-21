@@ -38,6 +38,13 @@ class FreelanceController extends Controller
      */
     public function store(FreelanceRequest $request)
     {
+        $data = $request->except("attachment");
+        if ($request->hasFile("attachment")) {
+            $file = $request->file("attachment"); //return uploadedfile object
+            $path = $file->store("uploads", "public");
+            $data["attachment_path"] = $path;
+        }
+
         $freelance=new Freelance();
 
         $freelance->platform_id=$request->input('platform_id');
@@ -46,11 +53,13 @@ class FreelanceController extends Controller
         $freelance->job_title=$request->input('job_title');
         $freelance->job_description=$request->input('job_description');
         $freelance->job_link=$request->input('job_link');
-        $freelance->attachment=$request->input('attachment');
         $freelance->salary=$request->input('salary');
         $freelance->client_feedback=$request->input('client_feedback');
         $freelance->status=$request->input('status');
         $freelance->notes=$request->input('notes');
+        if(isset($data["attachment_path"])){
+            $freelance->attachment = $data["attachment_path"];
+        }
 
         $freelance->save();
 

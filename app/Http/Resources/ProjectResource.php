@@ -23,7 +23,7 @@ class ProjectResource extends JsonResource
             'status'=>$this->status,
             'start_date'=>$this->start_date,
             'end_date'=>$this->end_date,
-
+            'partners'=>$this->partners
         ];
 
     }
