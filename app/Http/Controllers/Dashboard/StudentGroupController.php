@@ -19,12 +19,18 @@ class StudentGroupController extends Controller
      */
     public function showStudents(Request $request)
     {
-        // $request->validate([
-        //     'group_id' => 'required|integer|exists:groups,id'
-        // ]);
-        // $group=Group::where('id','=',$request->input('group_id'))->get();
-        // //$students=$group->students;
-        // return $group;
+        $request->validate([
+            'group_id' => 'required|integer|exists:groups,id'
+        ]);
+        $availableStudents=Student::whereNotIn('id',function($query) use ($request){
+            $query->select('student_id')->from('student_group')->where('group_id','!=',$request->group_id);
+        })->get();
+
+        // $group = Group::find($request->group_id);
+        // $studentsInGroup = $group->students;
+        // $students=Student::all();
+        // $availableStudents = $students->diff($studentsInGroup);
+        return $availableStudents;
     }
 
     /**
@@ -41,16 +47,12 @@ class StudentGroupController extends Controller
             'student_id' => 'required|integer|exists:students,id',
         ]);
 
-        $studentGroup=StudentGroup::where('group_id','='.$request->input('group_id'))
-                    ->where('student_id','='.$request->input('student_id'))->get();
-        if($studentGroup->isEmpty()){
-            $studentGroup=new StudentGroup();
-            $studentGroup->group_id=$request->input('group_id');
-            $studentGroup->student_id=$request->input('student_id');
-            $studentGroup->save();
-            return $this->apiResponse($studentGroup,'Student added Successfully to the Group',Response::HTTP_CREATED);
-        }
+        $studentGroup=StudentGroup::firstOrCreate([
+            'group_id' => $request->input('group_id'),
+            'student_id' => $request->input('student_id'),
+        ]);
 
+        return $this->apiResponse($studentGroup,'Student added Successfully to the Group',Response::HTTP_CREATED);
     }
 
     /**
