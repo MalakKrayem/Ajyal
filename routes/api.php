@@ -18,6 +18,7 @@ use App\Http\Controllers\Dashboard\RateController;
 use App\Http\Controllers\Dashboard\StudentController;
 use App\Http\Controllers\Dashboard\StudentGroupController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\LandingPage\ContactController;
 use App\Http\Controllers\LandingPage\LandingPageController;
 use App\Http\Controllers\LandingPage\QuestionController;
 use App\Http\Controllers\Student\FreelanceController;
@@ -40,6 +41,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::post('auth/{guard}/access-token', [AccessTokenController::class, 'store'])->middleware('guest:sanctum');
 Route::get('landing-page', [LandingPageController::class, 'index']);
+Route::post('contacts', [ContactController::class, 'store']);
+
 
 Route::middleware('auth:sanctum')->prefix('dashboard')->group(function(){
     Route::apiResource('users',UserController::class);
@@ -66,6 +69,7 @@ Route::middleware('auth:sanctum')->prefix('dashboard')->group(function(){
     Route::post('avaliable-students',[StudentGroupController::class,'showStudents']);
     Route::post('avaliable-partners',[PartnerProjectController::class,'showPartners']);
     Route::post('add-partner',[PartnerProjectController::class,'store']);
+    Route::apiResource('contacts', ContactController::class)->except('store');
 });
 Route::middleware('auth:sanctum')->prefix('student')->group(function(){
     Route::apiResource('freelances',FreelanceController::class);

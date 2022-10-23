@@ -19,7 +19,7 @@ class GroupResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'image'=>$this->image_url,
-            'budget'=>$this->budget,
+            #'budget'=>$this->budget,
             'hour_count'=>$this->hour_count,
             'participants_count'=>$this->participants_count,
             'status'=>$this->status,
