@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Freelance extends Model
 {
@@ -49,5 +50,17 @@ class Freelance extends Model
         $builder->when($filters['status'] ?? false, function($builder, $value) {
             $builder->where('freelances.status', '=', $value);
         });
+    }
+
+    public function getAttachmentUrlAttribute()
+    {
+        if (!$this->attachment) {
+            return 'https://img.favpng.com/2/12/12/computer-icons-portable-network-graphics-user-profile-avatar-png-favpng-L1ihcbxsHbnBKBvjjfBMFGbb7.jpg';
+        }
+        if(Str::startsWith($this->attachment, ['http://', 'https://']) ) {
+            return $this->attachment;
+        }
+
+        return asset('storage/' . $this->attachment);
     }
 }

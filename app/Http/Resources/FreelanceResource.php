@@ -25,7 +25,7 @@ class FreelanceResource extends JsonResource
             'job_title' => $this->job_title,
             'job_description' => $this->job_description,
             'job_link' => $this->job_link,
-            'attachment' => $this->attachment,
+            'attachment' => $this->attachment_url,
             'salary' => $this->salary,
             'client_feedback' => $this->client_feedback,
             'status' => $this->status,
