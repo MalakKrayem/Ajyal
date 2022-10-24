@@ -95,6 +95,11 @@ class FreelanceController extends Controller
 
         $old_salary=$freelance->salary;
         $new_salary=$request->input('salary');
+        if ($request->hasFile("attachment")) {
+            $file = $request->file("attachment"); //return uploadedfile object
+            $path = $file->store("uploads", "public");
+            $data["attachment_path"] = $path;
+        }
 
         $freelance->platform_id=$request->input('platform_id');
         $freelance->student_id=$request->input('student_id');
@@ -102,7 +107,9 @@ class FreelanceController extends Controller
         $freelance->job_title=$request->input('job_title');
         $freelance->job_description=$request->input('job_description');
         $freelance->job_link=$request->input('job_link');
-        $freelance->attachment=$request->input('attachment');
+        if(isset($data["attachment_path"])){
+            $freelance->attachment = $data["attachment_path"];
+        }
         $freelance->salary=$request->input('salary');
         $freelance->client_feedback=$request->input('client_feedback');
         $freelance->status=$request->input('status');
