@@ -61,4 +61,44 @@ class AccessTokenController extends Controller
 
         return $this->apiResponse(null,"Unauthorized!",Response::HTTP_UNAUTHORIZED);
     }
+
+    //update password
+    public function updatePassword(Request $request)
+{
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed',
+        ]);
+
+        #Match The Old Password
+        if(!Hash::check($request->old_password, auth()->user()->password)){
+            return $this->apiResponse(null,"Old Password Doesn't match!");
+        }
+
+        $authModel=get_class(auth()->user());
+        $authClass = class_basename($authModel);
+        if($authClass == 'User'){
+            User::whereId(auth()->user()->id)->update([
+                'password' => Hash::make($request->new_password)
+            ]);
+
+            return $this->apiResponse(null,"Password changed successfully!",200);
+        }
+        if($authClass == 'Mentor'){
+            Mentor::whereId(auth()->user()->id)->update([
+                'password' => Hash::make($request->new_password)
+            ]);
+
+            return $this->apiResponse(null,"Password changed successfully!",200);
+        }
+        if($authClass == 'Student'){
+            Student::whereId(auth()->user()->id)->update([
+                'password' => Hash::make($request->new_password)
+            ]);
+
+            return $this->apiResponse(null,"Password changed successfully!",200);
+        }
+
+}
+
 }

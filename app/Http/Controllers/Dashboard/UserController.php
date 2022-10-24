@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -84,8 +85,26 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request, User $user)
+    public function update(Request $request, User $user)
     {
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => [
+                'required',
+                Rule::unique('users')->ignore($user->id),
+                'email'
+            ],
+            'phone' => [
+                'required',
+                Rule::unique('users')->ignore($user->id),
+                'numeric'
+            ],
+            'gender'=>'required|string|in:female,male',
+            'image'=>'mimes:jpg,png',
+            'overview' => 'string|max:255',
+            'position_description'=>'required|string|max:255'
+        ]);
         $data = $request->except("image");
 
         if ($request->hasFile("image")) {

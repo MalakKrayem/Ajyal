@@ -9,6 +9,7 @@ use App\Models\Mentor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 class MentorController extends Controller
@@ -80,8 +81,25 @@ class MentorController extends Controller
      * @param  \App\Models\Mentor  $mentor
      * @return \Illuminate\Http\Response
      */
-    public function update(MentorRequest $request, Mentor $mentor)
+    public function update(Request $request, Mentor $mentor)
     {
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => [
+                'required',
+                Rule::unique('mentors')->ignore($mentor->id),
+                'email'
+            ],
+            'phone' => [
+                'required',
+                Rule::unique('mentors')->ignore($mentor->id),
+                'numeric'
+            ],
+            'gender'=>'required|string|in:female,male',
+            'image'=>'mimes:jpg,png',
+            'overview' => 'string|max:255',
+        ]);
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object

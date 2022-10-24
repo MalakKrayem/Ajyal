@@ -10,6 +10,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 class StudentController extends Controller
@@ -79,8 +80,31 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(StudentRequest $request, Student $student)
+    public function update(Request $request, Student $student)
     {
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => [
+                'required',
+                Rule::unique('students')->ignore($student->id),
+                'email'
+            ],
+            'phone' => [
+                'required',
+                Rule::unique('students')->ignore($student->id),
+                'numeric'
+            ],
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,svg',
+            'address' => 'required|string|max:255',
+            'rate' => 'integer|min:0',
+            'transport' => 'integer|min:0',
+            'status' => 'required|in:active,inactive',
+            'total_income' => 'numeric|min:0',
+            'total_jobs' => 'integer|min:0',
+            'gender'=>'required|string|in:female,male',
+            'group_id'=>'required|integer|exists:groups,id'
+        ]);
         $data = $request->except("image");
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -29,7 +30,7 @@ class UserRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => "required|email|unique:users,email,".$id,
-            'password' => 'required|string|min:8|max:15',
+            'password' => "required|string|min:8|max:15",
             'gender'=>'required|string|in:female,male',
             'image'=>'mimes:jpg,png',
             'phone'=>'required|numeric|unique:users,phone,'.$id,

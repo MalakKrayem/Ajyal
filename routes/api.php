@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('auth/{guard}/access-token', [AccessTokenController::class, 'store'])->middleware('guest:sanctum');
+Route::post('change-password',[AccessTokenController::class,'updatePassword'])->middleware('auth:sanctum');
 Route::get('landing-page', [LandingPageController::class, 'index']);
 Route::post('contacts', [ContactController::class, 'store']);
 
