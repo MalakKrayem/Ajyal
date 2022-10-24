@@ -41,15 +41,23 @@ class AdvertisingController extends Controller
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
+        if ($request->hasFile("attachment")) {
+            $file = $request->file("attachment"); //return uploadedfile object
+            $path = $file->store("uploads", "public");
+            $data["attachment_path"] = $path;
+        }
+
         $advertising= new Advertising();
         $advertising->title = $request->input("title");
         $advertising->details = $request->input("details");
         $advertising->notes = $request->input("notes");
         $advertising->deadline = $request->input("deadline");
-        $advertising->attachment = $request->input("attachment");
         $advertising->status = $request->input("status");
         if(isset($data["image_path"])){
             $advertising->image = $data["image_path"];
+        }
+        if(isset($data["attachment_path"])){
+            $advertising->attachment = $data["attachment_path"];
         }
         $advertising->save();
         if($advertising){

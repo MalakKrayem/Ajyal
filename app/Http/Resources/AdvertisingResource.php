@@ -20,7 +20,7 @@ class AdvertisingResource extends JsonResource
             'details' => $this->details,
             'image' => $this->image_url,
             'notes' => $this->notes,
-            'attachment' => $this->attachment,
+            'attachment' => $this->attachment_url,
             'deadline' => $this->deadline,
             'status' => $this->status,
         ];

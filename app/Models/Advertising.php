@@ -34,6 +34,11 @@ class Advertising extends Model
 
         return asset('storage/' . $this->image);
     }
+    public function getAttachmentUrlAttribute()
+    {
+
+        return asset('storage/' . $this->attachment);
+    }
 
     //Deleted observer
     public static function boot()
