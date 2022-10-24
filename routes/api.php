@@ -73,4 +73,5 @@ Route::middleware('auth:sanctum')->prefix('dashboard')->group(function(){
 });
 Route::middleware('auth:sanctum')->prefix('student')->group(function(){
     Route::apiResource('freelances',FreelanceController::class);
+    Route::post('show-groups',[FreelanceController::class,'showGroups']);
 });

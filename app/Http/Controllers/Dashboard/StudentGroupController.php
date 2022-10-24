@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\Student;
 use App\Models\StudentGroup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class StudentGroupController extends Controller
@@ -22,14 +23,15 @@ class StudentGroupController extends Controller
         $request->validate([
             'group_id' => 'required|integer|exists:groups,id'
         ]);
-        $availableStudents=Student::whereNotIn('id',function($query) use ($request){
-            $query->select('student_id')->from('student_group')->where('group_id','!=',$request->group_id);
+        $availableStudents=Student::whereNotExists(function($query) use ($request){
+            $query->select(DB::raw(1))->from('student_group')
+            ->where('group_id','=',$request->group_id)
+            ->whereColumn('student_id','students.id');
         })->get();
+        // $availableStudents=Student::whereDoesntHave('groups',function($query) use ($request){
+        //     $query->where('group_id','=',$request->group_id);
+        // })->dd();
 
-        // $group = Group::find($request->group_id);
-        // $studentsInGroup = $group->students;
-        // $students=Student::all();
-        // $availableStudents = $students->diff($studentsInGroup);
         return $availableStudents;
     }
 

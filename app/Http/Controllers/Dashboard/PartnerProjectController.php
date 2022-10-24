@@ -7,6 +7,7 @@ use App\Models\Partner;
 use App\Models\Project;
 use App\Models\ProjectPartner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartnerProjectController extends Controller
@@ -18,8 +19,11 @@ class PartnerProjectController extends Controller
         $request->validate([
             'project_id' => 'required|integer|exists:projects,id'
         ]);
-        $availablePartners=Partner::whereNotIn('id',function($query) use ($request){
-            $query->select('partner_id')->from('project_partner')->where('project_id','=',$request->project_id);
+
+        $availablePartners=Partner::whereNotExists(function($query) use ($request){
+            $query->select(DB::raw(1))->from('project_partner')
+            ->where('project_id','=',$request->project_id)
+            ->whereColumn('partner_id','partners.id');
         })->get();
 
         // $project=Project::find($request->project_id);

@@ -11,6 +11,8 @@ use App\Http\Controllers\Dashboard\ApiResponseTrait;
 use App\Http\Requests\FreelanceRequest;
 use App\Http\Resources\FreelanceResource;
 use App\Models\Freelance;
+use App\Models\Student;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class FreelanceController extends Controller
@@ -125,5 +127,12 @@ class FreelanceController extends Controller
         $freelance->delete();
         event(new DeleteFreelanceJob($freelance));
         return $this->apiResponse(null,'Done',Response::HTTP_OK);
+    }
+
+    public function showGroups(Request $request){
+        $request->validate(['student_id'=>'required|integer|exists:students,id']);
+        $student=Student::find($request->student_id);
+        $groups=$student->groups;
+        return $groups;
     }
 }

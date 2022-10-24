@@ -30,7 +30,6 @@ class FreelanceRequest extends FormRequest
             'job_title' => 'required|string|max:255',
             'job_description' => 'string|max:500',
             'job_link' => 'string',
-            'attachment' => 'string',
             'salary' => 'required|integer',
             'client_feedback' => 'string',
             'status' => 'required|string|in:completed,ongoing',
