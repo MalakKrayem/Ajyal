@@ -50,7 +50,7 @@ Route::middleware('auth:sanctum')->prefix('dashboard')->group(function(){
     Route::apiResource('mentors',MentorController::class);
     Route::delete('auth/access-token/{token?}', [AccessTokenController::class, 'destroy']);
     Route::apiResource('categories', CategoriesController::class);
-    Route::post('landing-page', [LandingPageController::class, 'store']);
+    Route::post('landing-page/{key}', [LandingPageController::class, 'store']);
     Route::apiResource('platforms', PlatformController::class);
     Route::apiResource('partners', PartnerController::class);
     Route::apiResource('advertisings', AdvertisingController::class);

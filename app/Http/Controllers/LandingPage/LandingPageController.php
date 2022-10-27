@@ -41,29 +41,32 @@ class LandingPageController extends Controller
         ],'Done',200);
     }
 
-    public function store(LandingPageRequest $request)
+    public function store(LandingPageRequest $request,$key)
     {
-        $data=json_decode($request->getContent(), true);
         $images=[];
-        foreach ($data as $key=>$value){
-            $content=$value['content'];
-            foreach ($value['images'] as $image){
-                if ($image->hasFile("image")) {
-                    $file = $image->file("image"); //return uploadedfile object
-                    $path = $file->store("uploads", "public");
-                    $image_path = $path;
+        $data=$request->except('images');
+        $ourKey=$key;
+        if ($request->has('images')){
+                foreach ($request->file('images') as $key => $file){
+                    // Get FileName
+                    $filenameWithExt = $file->getClientOriginalName();
+                    //Get just filename
+                    $filename = pathinfo( $filenameWithExt, PATHINFO_FILENAME);
+                    //Get just extension
+                    $extension = $file->getClientOriginalExtension();
+                    //Filename to Store
+                    $fileNameToStore = $filename.'_'.time().'.'.$extension;
+                    //Upload Image
+                    $path = $file->store('uploads','public');
+                    array_push($images, $path);
                 }
-                if(isset($data["image_path"])){
-                    $images[] = $image_path;
-                }
-            }
-            $data=["content"=>$content,"images"=>$images];
-            $landingPage = LandingPage::updateOrCreate(['key' => $key], [
-                'value' => $data,
-            ]);
-
-            $landingPage->save();
         }
-        return $this->apiResponse($landingPage, 'Done', 201);
+        $data=['content'=>$request->content , 'images' => $images];
+        $landingPage = LandingPage::updateOrCreate(['key' => $ourKey], [
+            'value' => json_encode($data),
+        ]);
+
+        $landingPage->save();
+        return $this->apiResponse($landingPage,'Done',201);
     }
 }
