@@ -52,7 +52,7 @@ class CourseController extends Controller
         }
         $course->save();
         if($course){
-            return $this->apiResponse(new CourseResource($course),"The Course saved!",Response::HTTP_CREATED);
+            return $this->apiResponse(new CourseResource($course),"The Course saved!",201);
         }
             return $this->apiResponse(null,"The Course not saved!",404);
 
@@ -87,20 +87,12 @@ class CourseController extends Controller
             $data["image_path"] = $path;
         }
 
-        $course->title = $request->input("title");
-        $course->description = $request->input("description");
-        $course->hour_count = $request->input("hour_count");
-        $course->start_date = $request->input("start_date");
-        $course->end_date = $request->input("end_date");
-        $course->status = $request->input("status");
-        $course->mentor_id = $request->input("mentor_id");
-        $course->group_id = $request->input("group_id");
         if(isset($data["image_path"])){
             $course->image = $data["image_path"];
         }
-        $course->save();
+        $course->update($request->all());
         if($course){
-            return $this->apiResponse(new CourseResource($course),"The Course saved!",Response::HTTP_CREATED);
+            return $this->apiResponse(new CourseResource($course),"The Course saved!",201);
         }
             return $this->apiResponse(null,"The Course not saved!",404);
     }

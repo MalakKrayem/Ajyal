@@ -84,12 +84,11 @@ class CategoriesController extends Controller
             $data["image_path"] = $path;
         }
 
-        $category->title=$request->input('title');
-        $category->description=$request->input('description');
         if(isset($data["image_path"])){
             $category->image=$data["image_path"];
         }
-        $category->save();
+        $category->update($request->all());
+
         if($category){
             return $this->apiResponse(new CategoryResource($category),"The category updated!",201);
         }

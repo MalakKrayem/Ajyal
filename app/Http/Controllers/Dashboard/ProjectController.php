@@ -95,16 +95,11 @@ class ProjectController extends Controller
             $data["image_path"] = $path;
         }
 
-        $project->title = $request->input("title");
-        $project->description = $request->input("description");
-        $project->budget = $request->input("budget");
-        $project->start_date = $request->input("start_date");
-        $project->end_date = $request->input("end_date");
-        $project->status = $request->input("status");
         if(isset($data["image_path"])){
+
             $project->image = $data["image_path"];
         }
-        $project->save();
+        $project->update($request->all());
         if($project){
             return $this->apiResponse(new ProjectResource($project),"The project saved!",201);
         }
