@@ -20,6 +20,7 @@ class Student extends Authenticatable
         'image',
         'phone',
         'address',
+        'gender',
         'rate',
         'transport',
         'status',

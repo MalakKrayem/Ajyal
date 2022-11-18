@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GroupRequest;
 use App\Http\Resources\GroupResource;
+use App\Imports\StudentsImport;
 use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use PHPUnit\Framework\MockObject\Api;
 
 class GroupController extends Controller
@@ -106,5 +108,14 @@ class GroupController extends Controller
     {
         $group->delete();
         return $this->apiResponse($group,"The group deleted sucessfuly!",200);
+    }
+
+    public function import(Request $request)
+    {
+        Excel::import(new StudentsImport($request), $request->file('students'));
+
+        return response()->json([
+            'message' => 'ok'
+        ]);
     }
 }
