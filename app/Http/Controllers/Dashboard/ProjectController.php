@@ -19,9 +19,11 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
+
+        
         $projects = Project::filter($request->query())
         ->orderBy('projects.title')
-        ->paginate();
+        ->paginate(15);
 
         if($projects->isEmpty()){
             return $this->apiResponse(null, 'No projects found', 404);

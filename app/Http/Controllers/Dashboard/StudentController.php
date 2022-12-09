@@ -97,7 +97,7 @@ class StudentController extends Controller
             ],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,svg',
             'address' => 'required|string|max:255',
-            'rate' => 'integer|min:0',
+            'rate' => 'string|in:Featured,Junior,Average,Unclassified',
             'transport' => 'integer|min:0',
             'status' => 'required|in:active,inactive',
             'total_income' => 'numeric|min:0',

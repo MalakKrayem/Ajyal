@@ -13,6 +13,7 @@ use App\Models\Group;
 use App\Models\LandingPage;
 use App\Models\Partner;
 use App\Models\Question;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -29,6 +30,7 @@ class LandingPageController extends Controller
         $traning_statistic=GroupLandingResource::collection(Group::all());
         $groups=Group::all();
         $questions=Question::all();
+        $students=Student::where('rate', 'Featured')->get();
         return $this->apiResponse([
             'pageContent'=>$landingPage,
             'advertisings'=>$advertisings,
@@ -38,6 +40,7 @@ class LandingPageController extends Controller
             'activites'=>$activites,
             'groups'=>$groups,
             'questions'=>$questions,
+            'students'=>$students
         ],'Done',200);
     }
 

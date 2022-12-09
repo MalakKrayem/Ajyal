@@ -20,8 +20,10 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        $activities = ActivityResource::collection(Activity::all());
-        if($activities->isEmpty()){
+        $activities = Activity::paginate(15);
+        $has_more_page = $activities->hasMorePages();
+        $activitiess = ActivityResource::collection($activities);
+                if($activities->isEmpty()){
             return $this->apiResponse(null,'No Activities Found',Response::HTTP_NOT_FOUND);
         }
         return $this->apiResponse($activities,'Done',Response::HTTP_OK);
@@ -60,9 +62,10 @@ class ActivityController extends Controller
      * @param  \App\Models\Activity  $activite
      * @return \Illuminate\Http\Response
      */
-    public function show(Activity $activite)
+    public function show($id)
     {
-        return $this->apiResponse(new ActivityResource($activite),'Done',Response::HTTP_OK);
+        
+        return $this->apiResponse(new ActivityResource(Activity::findOrFail($id)),'Done',Response::HTTP_OK);
     }
 
     /**
