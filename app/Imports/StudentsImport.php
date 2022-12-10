@@ -12,8 +12,6 @@ class StudentsImport implements ToModel , WithHeadingRow
 {
     protected  $data;
 
-   
-
     public function __construct($data){
         $this->data = $data;
     }
