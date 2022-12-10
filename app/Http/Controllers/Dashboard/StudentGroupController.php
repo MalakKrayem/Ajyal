@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Events\StudentAdded;
 use App\Http\Controllers\Controller;
 use App\Models\Group;
 use App\Models\Student;
@@ -53,7 +54,10 @@ class StudentGroupController extends Controller
             'group_id' => $request->input('group_id'),
             'student_id' => $request->input('student_id'),
         ]);
-
+        
+        $group_id=$studentGroup->group_id;
+        
+        event(new StudentAdded($studentGroup,$group_id));
         return $this->apiResponse($studentGroup,'Student added Successfully to the Group',Response::HTTP_CREATED);
     }
 

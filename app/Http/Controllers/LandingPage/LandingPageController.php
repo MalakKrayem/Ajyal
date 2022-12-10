@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers\LandingPage;
 
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\Dashboard\ApiResponseTrait;
-use App\Http\Requests\LandingPageRequest;
-use App\Http\Resources\GroupLandingResource;
-use App\Http\Resources\LandingPageResource;
-use App\Models\Activity;
-use App\Models\Advertising;
-use App\Models\Group;
-use App\Models\LandingPage;
-use App\Models\Partner;
-use App\Models\Question;
-use App\Models\Student;
 use App\Models\User;
+use App\Models\Group;
+use App\Models\Course;
+use App\Models\Partner;
+use App\Models\Student;
+use App\Models\Activity;
+use App\Models\Question;
+use App\Models\Advertising;
+use App\Models\LandingPage;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\LandingPageRequest;
+use App\Http\Resources\LandingPageResource;
+use App\Http\Resources\GroupLandingResource;
+use App\Http\Controllers\Dashboard\ApiResponseTrait;
 
 class LandingPageController extends Controller
 {
@@ -42,6 +43,8 @@ class LandingPageController extends Controller
             'questions'=>$questions,
             'students'=>$students
         ],'Done',200);
+
+ 
     }
 
     public function store(LandingPageRequest $request,$key)

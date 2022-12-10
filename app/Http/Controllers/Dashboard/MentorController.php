@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\MentorRequest;
-use App\Http\Resources\MentorResource;
 use App\Models\Mentor;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\MentorRequest;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\MentorResource;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Notifications\Notification;
 use Symfony\Component\HttpFoundation\Response;
 
 class MentorController extends Controller
@@ -88,13 +89,11 @@ class MentorController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => [
                 'required',
-                Rule::unique('mentors')->ignore($mentor->id),
-                'email'
+                Rule::unique('mentors', 'email')->ignore($mentor->id)
             ],
             'phone' => [
                 'required',
-                Rule::unique('mentors')->ignore($mentor->id),
-                'numeric'
+                Rule::unique('mentors', 'phone')->ignore($mentor->id)
             ],
             'gender'=>'required|string|in:female,male',
             'image'=>'mimes:jpg,png',
@@ -135,4 +134,11 @@ class MentorController extends Controller
         $mentor->delete();
         return $this->apiResponse(new MentorResource($mentor),"The mentor deleted sucessfuly!",200);
     }
+
+
+    // public function get_notification(){
+
+    //     $notifi=auth()->user()->notifications;
+    //         return $notifi;
+    // }    
 }

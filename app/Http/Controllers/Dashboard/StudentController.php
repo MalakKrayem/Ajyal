@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Events\StudentAdded;
 use App\Events\StudentGroupEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StudentRequest;

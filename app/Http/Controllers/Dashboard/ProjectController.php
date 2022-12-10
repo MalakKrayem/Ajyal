@@ -22,13 +22,19 @@ class ProjectController extends Controller
 
         
         $projects = Project::filter($request->query())
-        ->orderBy('projects.title')
-        ->paginate(15);
+        ->orderBy('projects.title')->paginate(2);
 
+
+        $has_more_page=$projects->hasMorePages();
+        $data['has_more_page'] = $has_more_page;
+        
+        $projectsr=ProjectResource::collection($projects);
+        $data['projectsr']=$projectsr;
+        
         if($projects->isEmpty()){
             return $this->apiResponse(null, 'No projects found', 404);
         }
-        return $this->apiResponse(ProjectResource::collection($projects),'Done',200);
+        return $this->apiResponse($data,'Done',200);
     }
 
 
