@@ -32,7 +32,7 @@ class StudentRequest extends FormRequest
             'image' => 'nullable|image|mimes:jpeg,png,jpg,svg',
             'phone' => 'required|string|max:255|unique:students,phone,'.$id,
             'address' => 'required|string|max:255',
-            'rate' => 'integer|min:0',
+            'rate' => 'in:Featured,Junior,Average,Unclassified',
             'transport' => 'integer|min:0',
             'status' => 'required|in:active,inactive',
             'total_income' => 'numeric|min:0',

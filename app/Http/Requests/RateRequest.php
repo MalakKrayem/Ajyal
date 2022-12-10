@@ -24,9 +24,10 @@ class RateRequest extends FormRequest
     public function rules()
     {
         return [
+            //  'student_id' => 'required|integer|exists:students,id',
             'student_id' => 'required|integer|exists:users,id',
             'course_id' => 'required|integer|exists:courses,id',
-            'rate' => 'required|integer|min:1|max:5',
+            'rate' => 'in:Featured,Junior,Average,Unclassified',
             'notes' => 'string',
         ];
     }

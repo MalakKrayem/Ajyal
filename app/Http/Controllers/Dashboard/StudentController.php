@@ -88,17 +88,15 @@ class StudentController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => [
                 'required',
-                Rule::unique('students')->ignore($student->id),
-                'email'
+                Rule::unique('students', 'email')->ignore($student->id)
             ],
             'phone' => [
                 'required',
-                Rule::unique('students')->ignore($student->id),
-                'numeric'
+                Rule::unique('students', 'phone')->ignore($student->id)
             ],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,svg',
             'address' => 'required|string|max:255',
-            'rate' => 'string|in:Featured,Junior,Average,Unclassified',
+            // 'rate' => 'string|in:Featured,Junior,Average,Unclassified',
             'transport' => 'integer|min:0',
             'status' => 'required|in:active,inactive',
             'total_income' => 'numeric|min:0',

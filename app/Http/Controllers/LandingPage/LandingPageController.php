@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Group;
 use App\Models\Course;
 use App\Models\Partner;
+use App\Models\Project;
 use App\Models\Student;
 use App\Models\Activity;
 use App\Models\Question;
@@ -32,6 +33,11 @@ class LandingPageController extends Controller
         $groups=Group::all();
         $questions=Question::all();
         $students=Student::where('rate', 'Featured')->get();
+        $beneficiaries =  Student::count();
+        $women = Student::where('gender', 'female')->count();
+        $project = Project::count();
+        //أنشطة مدنية =>1
+        $social_activity=Activity::where('activity_type_id',1)->count();
         return $this->apiResponse([
             'pageContent'=>$landingPage,
             'advertisings'=>$advertisings,
@@ -41,7 +47,11 @@ class LandingPageController extends Controller
             'activites'=>$activites,
             'groups'=>$groups,
             'questions'=>$questions,
-            'students'=>$students
+            'students'=>$students,
+            'beneficiaries' => $beneficiaries,
+            'women' => $women,
+            'project' => $project,  
+            'social_activity'=>$social_activity,
         ],'Done',200);
 
  
@@ -75,4 +85,6 @@ class LandingPageController extends Controller
         $landingPage->save();
         return $this->apiResponse($landingPage,'Done',201);
     }
+
+
 }
