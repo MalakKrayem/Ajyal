@@ -47,18 +47,29 @@ class StudentGroupController extends Controller
         //Validate request
         $request->validate([
             'group_id' => 'required|integer|exists:groups,id',
-            'student_id' => 'required|integer|exists:students,id',
+           // 'student_id' => 'required|integer|exists:students,id',
         ]);
 
-        $studentGroup=StudentGroup::firstOrCreate([
-            'group_id' => $request->input('group_id'),
-            'student_id' => $request->input('student_id'),
-        ]);
+        $data =  $request->except('student_id');
+        $group_id = StudentGroup::create($data);
+
+        foreach ($request->student as $studentID) {
+            // $data = [];
+            $data['student_id'] = $studentID;
+            
+        $studentGroup=StudentGroup::create($data);  
+        // event(new StudentAdded($studentGroup, $group_id));
+        }
+
+        // $studentGroup=StudentGroup::firstOrCreate([
+        //     'group_id' => $request->input('group_id'),
+        //     'student_id' => $request->input('student_id'),
+        // ]);
         
-        $group_id=$studentGroup->group_id;
+        // $group_id=$studentGroup->group_id;
         
-        event(new StudentAdded($studentGroup,$group_id));
-        return $this->apiResponse($studentGroup,'Student added Successfully to the Group',Response::HTTP_CREATED);
+        // event(new StudentAdded($studentGroup,$group_id));
+        return $this->apiResponse($data,'Student added Successfully to the Group',Response::HTTP_CREATED);
     }
 
     /**

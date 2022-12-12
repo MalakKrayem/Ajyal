@@ -38,7 +38,7 @@ class StudentRequest extends FormRequest
             'total_income' => 'numeric|min:0',
             'total_jobs' => 'integer|min:0',
             'gender'=>'required|string|in:female,male',
-            'group_id'=>'required|integer|exists:groups,id'
+           // 'group_id'=>'required|integer|exists:groups,id'
         ];
     }
 }

@@ -87,10 +87,13 @@ class PartnerController extends Controller
         $partner->name = $request->input("name");
         $partner->description = $request->input("description");
         $partner->link = $request->input("link");
+
         if(isset($data["image_path"])){
             $partner->logo = $data["image_path"];
         }
         $partner->save();
+
+        
         
         if($partner){
             return $this->apiResponse(new PartnerResource($partner),'Partner updated successfully!',Response::HTTP_OK);
