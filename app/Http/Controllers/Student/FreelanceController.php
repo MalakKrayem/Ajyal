@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Student;
 
+use App\Events\AchievementAdded;
 use App\Events\DeleteFreelanceJob;
 use App\Events\UpdatePlatformJobsCount;
 use App\Events\UpdateStudentIncome;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Dashboard\ApiResponseTrait;
 use App\Http\Requests\FreelanceRequest;
 use App\Http\Resources\FreelanceResource;
+use App\Listeners\AddAchievement;
 use App\Models\Freelance;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -68,7 +70,7 @@ class FreelanceController extends Controller
         event(new UpdateStudentJobs($request->input('student_id'),1));
         event(new UpdateStudentIncome($request->input('salary'),$request->input('student_id'),null));
         event(new UpdatePlatformJobsCount($request->input('platform_id'),1));
-
+        event(new AchievementAdded($freelance));
         return $this->apiResponse(new FreelanceResource($freelance),'Done',Response::HTTP_CREATED);
     }
 

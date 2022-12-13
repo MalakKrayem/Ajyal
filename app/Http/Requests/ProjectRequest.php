@@ -31,7 +31,7 @@ class ProjectRequest extends FormRequest
             'start_date'=>'date',
             'end_date'=>'date',
             'image'=>'mimes:jpg,png',
-            'partner_id'=>'numeric|exists:partners,id',
+            'partner_id'=>'array|exists:partners,id',
         ];
     }
 }

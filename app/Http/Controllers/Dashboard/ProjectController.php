@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
+use App\Models\ProjectPartner;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -22,13 +23,19 @@ class ProjectController extends Controller
 
         
         $projects = Project::filter($request->query())
-        ->orderBy('projects.title')
-        ->paginate(15);
+        ->orderBy('projects.title')->paginate(2);
 
+
+        $has_more_page=$projects->hasMorePages();
+        $data['has_more_page'] = $has_more_page;
+        
+        $projectsr=ProjectResource::collection($projects);
+        $data['projectsr']=$projectsr;
+        
         if($projects->isEmpty()){
             return $this->apiResponse(null, 'No projects found', 404);
         }
-        return $this->apiResponse(ProjectResource::collection($projects),'Done',200);
+        return $this->apiResponse($data,'Done',200);
     }
 
 
@@ -60,7 +67,15 @@ class ProjectController extends Controller
         }
         $project->save();
 
-        event(new ProjectPartnerEvent($project->id,$request->input("partner_id")));
+        foreach ($request->partner_id as $partner) {
+            // $data = [];
+            $data['project_id'] = $project->id;
+            $data['partner_id'] = $partner;
+
+            $projectPartner = ProjectPartner::create($data);
+        }
+
+    //   event(new ProjectPartnerEvent($project->id,$request->input("partner_id")));
 
         if($project){
             return $this->apiResponse(new ProjectResource($project),"The project saved!",201);
@@ -90,7 +105,7 @@ class ProjectController extends Controller
      */
     public function update(ProjectRequest $request, Project $project)
     {
-        $data = $request->except("image");
+        $data = $request->except(['image']);
         if ($request->hasFile("image")) {
             $file = $request->file("image");
             $path = $file->store("uploads", "public");
@@ -101,7 +116,27 @@ class ProjectController extends Controller
 
             $project->image = $data["image_path"];
         }
-        $project->update($request->all());
+        
+        $project->save($data);
+        
+        //To add new many partner
+        if ($request->partner_id) {
+            foreach ($request->partner_id as $partner) {
+                 $data = [];
+                $data['project_id'] = $project->id;
+                $data['partner_id'] = $partner;
+
+                $projectPartner = ProjectPartner::updateOrCreate($data);
+            }
+        }
+
+        //To delete partner
+        if ($request->deleted_partner) {
+            foreach (ProjectPartner::where('project_id', $project->id)->whereIn('partner_id', $request->deleted_partner)->get() as $partner) {
+                $partner->delete();
+            }
+        } 
+        
         if($project){
             return $this->apiResponse(new ProjectResource($project),"The project saved!",201);
         }
@@ -119,4 +154,7 @@ class ProjectController extends Controller
         return $this->apiResponse($project,"The project deleted sucessfuly!",200);
 
     }
+
+
+    
 }
