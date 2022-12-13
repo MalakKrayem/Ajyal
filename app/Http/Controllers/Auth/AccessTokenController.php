@@ -96,7 +96,7 @@ class AccessTokenController extends Controller
                 'password' => Hash::make($request->new_password)
             ]);
 
-            return $this->apiResponse(null,"Password changed successfully!",200);
+            return $this->apiResponse(null,"Password changed successfully!",404);
         }
 
 }

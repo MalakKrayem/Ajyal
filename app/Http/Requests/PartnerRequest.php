@@ -27,7 +27,7 @@ class PartnerRequest extends FormRequest
             'name' => 'required|string',
             'description' => 'string|max:255',
             'logo' => 'required|mimes:jpg,jpeg,png',
-            'link' => 'required|url',
+            'link' => 'url',
         ];
     }
 }

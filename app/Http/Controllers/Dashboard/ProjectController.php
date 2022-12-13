@@ -126,16 +126,16 @@ class ProjectController extends Controller
                 $data['project_id'] = $project->id;
                 $data['partner_id'] = $partner;
 
-                $projectPartner = ProjectPartner::updateOrCreate($data);
+                $projectPartner = ProjectPartner::create($data);
             }
         }
 
         //To delete partner
-        if ($request->deleted_partner) {
-            foreach (ProjectPartner::where('project_id', $project->id)->whereIn('partner_id', $request->deleted_partner)->get() as $partner) {
-                $partner->delete();
-            }
-        } 
+        // if ($request->deleted_partner) {
+        //     foreach (ProjectPartner::where('project_id', $project->id)->whereIn('partner_id', $request->deleted_partner)->get() as $partner) {
+        //         $partner->delete();
+        //     }
+        // } 
         
         if($project){
             return $this->apiResponse(new ProjectResource($project),"The project saved!",201);

@@ -27,7 +27,7 @@ class AdvertisingRequest extends FormRequest
             'title' => 'required|string|max:255',
             'details' => 'required|string|max:500',
             'notes' => 'string|max:255',
-            'attachment' => 'required',
+            // 'attachment' => '',
             'deadline' => 'required|string|max:100',
             'status' => 'required|string|in:published,unpublished',
         ];

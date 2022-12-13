@@ -25,7 +25,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students=StudentResource::collection(Student::paginate(10));
+        $students=StudentResource::collection(Student::get());
         if($students->isEmpty()){
             return $this->apiResponse(null,'No Students Found',Response::HTTP_NOT_FOUND);
         }
@@ -69,10 +69,12 @@ class StudentController extends Controller
             $studentGroup = StudentGroup::create($data);
             // event(new StudentAdded($studentGroup, $group_id));
         }
-        
+
         // event(new StudentGroupEvent($student->id,$request->input("group_id")));
-         return $this->apiResponse(new StudentResource($student),'Student Created Successfully',Response::HTTP_CREATED);
-    }
+        if ($student) {
+            return $this->apiResponse(new StudentResource($student), "The project saved!", 201);
+        }
+        return $this->apiResponse(null, "The Student not saved!", 404);    }
 
     /**
      * Display the specified resource.
@@ -138,11 +140,11 @@ class StudentController extends Controller
         $student->update();
         
         //to delete student from StudentGroup
-           if ($request->deleted_student) {
-            foreach (StudentGroup::where('student_id',$student->id)->whereIn('group_id',$request->deleted_student)->get()as $stu) {
-               $stu->delete();
-            }
-        } 
+        //    if ($request->deleted_student) {
+        //     foreach (StudentGroup::where('student_id',$student->id)->whereIn('group_id',$request->deleted_student)->get()as $stu) {
+        //        $stu->delete();
+        //     }
+        // } 
         
         //To add student into group
         if($request->group_id){
