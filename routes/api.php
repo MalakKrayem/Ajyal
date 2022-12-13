@@ -55,22 +55,22 @@ Route::middleware('auth:sanctum')->prefix('dashboard')->group(function(){
     Route::apiResource('categories', CategoriesController::class);
     Route::post('landing-page/{key}', [LandingPageController::class, 'store']);
     Route::apiResource('platforms', PlatformController::class);
-    // Route::apiResource('partners', PartnerController::class);
+    Route::apiResource('partners', PartnerController::class);
     Route::apiResource('advertisings', AdvertisingController::class);
     Route::apiResource('activities-types', ActivitiesTypeController::class);
-    // Route::apiResource('activites',ActivityController::class);
-    // Route::apiResource('groups', GroupController::class);
+    Route::apiResource('activites',ActivityController::class);
+    Route::apiResource('groups', GroupController::class);
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('categories', CategoriesController::class);
-    // Route::apiResource('courses', CourseController::class);
-    // Route::apiResource('students', StudentController::class);
+    Route::apiResource('courses', CourseController::class);
+    Route::apiResource('students', StudentController::class);
     Route::apiResource('rates', RateController::class);
     Route::apiResource('attendences', AttendenceController::class);
     Route::get('{courseDay}/attendences',[AttendenceController::class,'index']);
     Route::apiResource('courses-days', CourseDayController::class);
     Route::apiResource('questions', QuestionController::class);
     Route::post('add-student',[StudentGroupController::class,'store']);
-    // Route::post('avaliable-students',[StudentGroupController::class,'showStudents']);
+    Route::post('avaliable-students',[StudentGroupController::class,'showStudents']);
     Route::post('avaliable-partners',[PartnerProjectController::class,'showPartners']);
     Route::post('add-partner',[PartnerProjectController::class,'store']);
     Route::apiResource('contacts', ContactController::class)->except('store');
@@ -82,10 +82,3 @@ Route::middleware('auth:sanctum')->prefix('student')->group(function(){
 
 
 Route::get('/notification', [NotificationController::class, 'index']);
-Route::apiResource('activites', ActivityController::class);
-Route::apiResource('students', StudentController::class);
-Route::apiResource('partners', PartnerController::class);
-Route::apiResource('projects', ProjectController::class);
-Route::post('avaliable-students', [StudentGroupController::class, 'showStudents']);
-Route::apiResource('courses', CourseController::class);
-Route::apiResource('groups', GroupController::class);
