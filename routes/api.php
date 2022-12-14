@@ -64,6 +64,7 @@ Route::middleware('auth:sanctum')->prefix('dashboard')->group(function(){
     Route::apiResource('categories', CategoriesController::class);
     Route::apiResource('courses', CourseController::class);
     Route::apiResource('students', StudentController::class);
+    Route::post('/import-excel', [GroupController::class, 'import']);
     Route::apiResource('rates', RateController::class);
     Route::apiResource('attendences', AttendenceController::class);
     Route::get('{courseDay}/attendences',[AttendenceController::class,'index']);
