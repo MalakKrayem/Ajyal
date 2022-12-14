@@ -65,7 +65,7 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show( Course $course)
+    public function show(Course $course)
     {
         return $this->apiResponse(new CourseResource($course),'Done',200);
     }
@@ -86,11 +86,22 @@ class CourseController extends Controller
             $path = $file->store("uploads", "public");
             $data["image_path"] = $path;
         }
-
+        $course=new Course();
+        $course->title = $request->input("title");
+        $course->description = $request->input("description");
+        $course->hour_count = $request->input("hour_count");
+        $course->start_date = $request->input("start_date");
+        $course->end_date = $request->input("end_date");
+        $course->status = $request->input("status");
+        $course->mentor_id = $request->input("mentor_id");
+        $course->group_id = $request->input("group_id");
         if(isset($data["image_path"])){
             $course->image = $data["image_path"];
         }
-        $course->update($request->all());
+
+        
+        $course->save();
+        
         if($course){
             return $this->apiResponse(new CourseResource($course),"The Course saved!",201);
         }

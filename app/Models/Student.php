@@ -44,7 +44,7 @@ class Student extends Authenticatable
     }
 
     public function groups(){
-        return $this->belongsToMany(Group::class,'student_group','student_id','group_id');
+        return $this->belongsToMany(Group::class,'student_group');
     }
     public function attendences()
     {

@@ -22,7 +22,7 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        $activities = Activity::paginate(15);
+        $activities = Activity::paginate(2);
 
         $has_more_page=$activities->hasMorePages();
         $data['has_more_page'] = $has_more_page;

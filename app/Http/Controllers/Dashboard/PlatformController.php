@@ -87,6 +87,7 @@ class PlatformController extends Controller
             $platform->image = $data["image_path"];
         }
         $platform->save();
+        
         if($platform){
             return $this->apiResponse(new PlatformResource($platform),'Platform updated successfully!',Response::HTTP_CREATED);
         }

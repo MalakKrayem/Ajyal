@@ -58,7 +58,7 @@ Route::middleware('auth:sanctum')->prefix('dashboard')->group(function(){
     Route::apiResource('partners', PartnerController::class);
     Route::apiResource('advertisings', AdvertisingController::class);
     Route::apiResource('activities-types', ActivitiesTypeController::class);
-    // Route::apiResource('activites',ActivityController::class);
+    Route::apiResource('activites',ActivityController::class);
     Route::apiResource('groups', GroupController::class);
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('categories', CategoriesController::class);
@@ -82,4 +82,3 @@ Route::middleware('auth:sanctum')->prefix('student')->group(function(){
 
 
 Route::get('/notification', [NotificationController::class, 'index']);
-Route::apiResource('activites', ActivityController::class);
