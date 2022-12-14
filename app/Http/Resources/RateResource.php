@@ -19,7 +19,7 @@ class RateResource extends JsonResource
             'course_id' => $this->course_id,
             'student' => $this->student->full_name,
             'course' => $this->course->title,
-            'rate' => $this->rate,
+            'rate' => $this->rate->rate,
             'notes' => $this->notes,
         ];
     }

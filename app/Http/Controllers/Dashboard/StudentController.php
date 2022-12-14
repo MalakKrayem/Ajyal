@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Models\Student;
+use App\Events\StudentAdded;
+use App\Models\StudentGroup;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Events\StudentGroupEvent;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StudentRequest;
 use App\Http\Resources\StudentResource;
-use App\Models\Student;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 class StudentController extends Controller
@@ -23,7 +25,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students=StudentResource::collection(Student::paginate(10));
+        $students=StudentResource::collection(Student::get());
         if($students->isEmpty()){
             return $this->apiResponse(null,'No Students Found',Response::HTTP_NOT_FOUND);
         }
@@ -58,9 +60,21 @@ class StudentController extends Controller
             $student->image=$data["image_path"];
         }
         $student->save();
-        event(new StudentGroupEvent($student->id,$request->input("group_id")));
-        return $this->apiResponse(new StudentResource($student),'Student Created Successfully',Response::HTTP_CREATED);
-    }
+
+        foreach ($request->group_id as $group) {
+            // $data = [];
+            $data['student_id']=$student->id;
+            $data['group_id'] = $group;
+
+            $studentGroup = StudentGroup::create($data);
+            // event(new StudentAdded($studentGroup, $group_id));
+        }
+
+        // event(new StudentGroupEvent($student->id,$request->input("group_id")));
+        if ($student) {
+            return $this->apiResponse(new StudentResource($student), "The project saved!", 201);
+        }
+        return $this->apiResponse(null, "The Student not saved!", 404);    }
 
     /**
      * Display the specified resource.
@@ -87,13 +101,11 @@ class StudentController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => [
                 'required',
-                Rule::unique('students')->ignore($student->id),
-                'email'
+                Rule::unique('students', 'email')->ignore($student->id)
             ],
             'phone' => [
                 'required',
-                Rule::unique('students')->ignore($student->id),
-                'numeric'
+                Rule::unique('students', 'phone')->ignore($student->id)
             ],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,svg',
             'address' => 'required|string|max:255',
@@ -103,9 +115,10 @@ class StudentController extends Controller
             'total_income' => 'numeric|min:0',
             'total_jobs' => 'integer|min:0',
             'gender'=>'required|string|in:female,male',
-            'group_id'=>'required|integer|exists:groups,id'
+            // 'group_id'=>'required|exists:groups,id',
+            'deleted_student'=>'array',
         ]);
-        $data = $request->except("image");
+        $data = $request->except(['image','group_id']);
         if ($request->hasFile("image")) {
             $file = $request->file("image"); //return uploadedfile object
             $path = $file->store("uploads", "public");
@@ -116,6 +129,7 @@ class StudentController extends Controller
         $student->email= $request->input("email");
         $student->password=Hash::make($request->input("password"));
         $student->address=$request->input("address");
+        $student->rate=$request->input("rate");
         $student->status=$request->input("status");
         $student->phone=$request->input("phone");
         $student->transport=$request->input('transport');
@@ -123,7 +137,26 @@ class StudentController extends Controller
         if(isset($data["image_path"])){
             $student->image=$data["image_path"];
         }
-        $student->save();
+        $student->update();
+        
+        //to delete student from StudentGroup
+        //    if ($request->deleted_student) {
+        //     foreach (StudentGroup::where('student_id',$student->id)->whereIn('group_id',$request->deleted_student)->get()as $stu) {
+        //        $stu->delete();
+        //     }
+        // } 
+        
+        //To add student into group
+        if($request->group_id){
+            foreach ($request->group_id as $group) {
+                $data = [];
+                $data['student_id'] = $student->id;
+                $data['group_id'] = $group;
+
+                $studentGroup = StudentGroup::updateOrCreate($data);
+            }
+        }
+        
         return $this->apiResponse(new StudentResource($student),'Student Updated Successfully',Response::HTTP_OK);
     }
 

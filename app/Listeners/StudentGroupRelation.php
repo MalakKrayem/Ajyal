@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Events\StudentAdded;
 use App\Events\StudentGroupEvent;
 use App\Models\StudentGroup;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -33,5 +34,7 @@ class StudentGroupRelation
             'student_id' => $student,
             'group_id' => $group
         ]);
+
+        // event(new StudentAdded($student));
     }
 }

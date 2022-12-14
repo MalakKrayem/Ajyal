@@ -2,13 +2,17 @@
 
 namespace App\Providers;
 
+use App\Events\AchievementAdded;
 use App\Events\DeleteFreelanceJob;
 use App\Events\ProjectPartnerEvent;
+use App\Events\StudentAdded;
 use App\Events\StudentGroupEvent;
 use App\Events\UpdatePlatformJobsCount;
 use App\Events\UpdateStudentIncome;
 use App\Events\UpdateStudentJobs;
 use App\Events\UpdateStudentRate;
+use App\Listeners\AddAchievement;
+use App\Listeners\AddStudent;
 use App\Listeners\DeleteFreelanceJobListener;
 use App\Listeners\ProjectPartnerRelation;
 use App\Listeners\StudentGroupRelation;
@@ -52,6 +56,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         UpdateStudentRate::class=>[
             UpdateStudentRateListener::class,
+        ],
+        AchievementAdded::class=>[
+            AddAchievement::class,  
+        ],
+        StudentAdded::class=>[
+            AddStudent::class,  
         ],
 
     ];

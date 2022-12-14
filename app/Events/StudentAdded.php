@@ -10,23 +10,22 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UpdateStudentRate
+class StudentAdded
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $student;
-    public $old_rate;
-    public $new_rate;
 
+    public $studentGroup;
+    public $group_id;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($student,$old_rate,$new_rate)
+    public function __construct($studentGroup,$group_id)
     {
-        $this->student=$student;
-        $this->old_rate=$old_rate;
-        $this->new_rate=$new_rate;
+        //
+        $this->studentGroup= $studentGroup;
+        $this->group_id=$group_id;
     }
 
     /**

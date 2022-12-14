@@ -10,6 +10,7 @@ use App\Http\Controllers\Dashboard\CourseController;
 use App\Http\Controllers\Dashboard\CourseDayController;
 use App\Http\Controllers\Dashboard\GroupController;
 use App\Http\Controllers\Dashboard\MentorController;
+use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\PartnerController;
 use App\Http\Controllers\Dashboard\PartnerProjectController;
 use App\Http\Controllers\Dashboard\PlatformController;
@@ -43,11 +44,13 @@ Route::post('auth/{guard}/access-token', [AccessTokenController::class, 'store']
 Route::post('change-password',[AccessTokenController::class,'updatePassword'])->middleware('auth:sanctum');
 Route::get('landing-page', [LandingPageController::class, 'index']);
 Route::post('contacts', [ContactController::class, 'store']);
-
-
+Route::apiResource('activites', ActivityController::class);
+Route::apiResource('groups', GroupController::class);
 Route::middleware('auth:sanctum')->prefix('dashboard')->group(function(){
     Route::apiResource('users',UserController::class);
     Route::apiResource('mentors',MentorController::class);
+    
+    
     Route::delete('auth/access-token/{token?}', [AccessTokenController::class, 'destroy']);
     Route::apiResource('categories', CategoriesController::class);
     Route::post('landing-page/{key}', [LandingPageController::class, 'store']);
@@ -77,3 +80,6 @@ Route::middleware('auth:sanctum')->prefix('student')->group(function(){
     Route::apiResource('freelances',FreelanceController::class);
     Route::post('show-groups',[FreelanceController::class,'showGroups']);
 });
+
+
+Route::get('/notification', [NotificationController::class, 'index']);

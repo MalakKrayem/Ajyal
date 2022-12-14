@@ -22,11 +22,29 @@ class GroupController extends Controller
      */
     public function index(Request $request)
     {
-        $groups = GroupResource::collection(Group::all());
-        if($groups->isEmpty()){
-            return $this->apiResponse(null, 'No Groups Found', 404);
+        $groups = Group::paginate(1);
+
+
+        $has_more_page = $groups->hasMorePages();
+        $data['has_more_page'] = $has_more_page;
+
+        $current_page = $groups->currentPage();
+        $data['current_page'] = $current_page;
+
+        $paginator = $groups->currentPage();
+
+        if ($groups->hasMorePages()) {
+
+            $data['next'] = $paginator + 1;
         }
-        return $this->apiResponse($groups, 'Done', 200);
+        if ($current_page > 1) {
+            $data['previous'] = $paginator - 1;
+        }
+        
+        $groupss = GroupResource::collection($groups);
+        $data['groups'] = $groupss;
+
+        return $this->apiResponse($data, 'Done', 200);
     }
 
     public function store(GroupRequest $request)
