@@ -72,7 +72,7 @@ class AccessTokenController extends Controller
 
         #Match The Old Password
         if(!Hash::check($request->old_password, auth()->user()->password)){
-            return $this->apiResponse(null,"Old Password Doesn't match!");
+            return $this->apiResponse(null,"Old Password Doesn't match!",404);
         }
 
         $authModel=get_class(auth()->user());
