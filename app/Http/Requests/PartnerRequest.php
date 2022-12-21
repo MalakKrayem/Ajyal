@@ -23,11 +23,21 @@ class PartnerRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $id = $this->id;
+
+        $rules= [
             'name' => 'required|string',
             'description' => 'string|max:255',
-            'logo' => 'required|mimes:jpg,jpeg,png',
+            'logo' => 'mimes:jpg,jpeg,png',
             'link' => 'url',
         ];
+        if ($id > 0) {
+        } else {
+            $rules += [
+                'logo' => 'nullable|mimes:jpg,jpeg,png',
+            ];
+        }
+        return $rules;
+    
     }
 }

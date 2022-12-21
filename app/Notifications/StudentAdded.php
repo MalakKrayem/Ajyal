@@ -60,7 +60,8 @@ class StudentAdded extends Notification
         return [
             //
 
-            'name'=>$this->studentGroup->student->full_name,
+              'message' =>$this->studentGroup->student->full_name,
+            //   'title'=>$this->type
         ];
     }
 }

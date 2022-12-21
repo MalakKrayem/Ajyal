@@ -8,8 +8,8 @@ use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Dashboard\ApiResponseTrait;
-
-
+use App\Http\Resources\NotificationResource;
+use App\Models\Mentor;
 
 class NotificationController extends Controller
 {
@@ -20,11 +20,13 @@ class NotificationController extends Controller
     {
 
         $mentor = auth()->user();
-        $notifications = Notification::where($mentor)->get();
+        
+        $notifications = Notification::get();
 
-
-        // {      $student=auth()->user()->unreadNotifications;
-        return $this->apiResponse($notifications, "Done", 200);
+        $notifi=NotificationResource::collection($notifications);
+        // $student=auth()->user()->unreadNotifications;
+    
+        return $this->apiResponse($notifi, "Done", 200);
     }
 
     // public function read(Request $request)

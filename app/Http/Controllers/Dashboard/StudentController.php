@@ -67,8 +67,11 @@ class StudentController extends Controller
             $data['group_id'] = $group;
 
             $studentGroup = StudentGroup::create($data);
-            // event(new StudentAdded($studentGroup, $group_id));
+            
+            event(new StudentAdded($studentGroup, $group));
+
         }
+
 
         // event(new StudentGroupEvent($student->id,$request->input("group_id")));
         if ($student) {

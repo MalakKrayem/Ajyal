@@ -20,34 +20,44 @@ class ActivityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $activities = Activity::paginate(2);
+        if ($request->headers->get('Authorization')) {
 
-        $has_more_page=$activities->hasMorePages();
-        $data['has_more_page'] = $has_more_page;
-        
-        $current_page= $activities->currentPage();
-        $data['current_page']=$current_page;
-        
-        $paginator=$activities->currentPage();
-        
-        if ($activities->hasMorePages()){
-            
-            $data['next']=$paginator + 1;
-        }
-        if($current_page > 1){
-            $data['previous']=$paginator - 1;
-        }
+            $activities = Activity::all();
+            return $this->apiResponse(ActivityResource::collection($activities), 200);
+        } else {
+            $activities = Activity::paginate(15);
 
-    $activitiess = ActivityResource::collection($activities);
-    $data['activities'] = $activitiess;
+            $has_more_page = $activities->hasMorePages();
+            $data['has_more_page'] = $has_more_page;
+
+            $current_page = $activities->currentPage();
+            $data['current_page'] = $current_page;
+
+            $paginator = $activities->currentPage();
+
+            if ($activities->hasMorePages()) {
+
+                $data['next'] = $paginator + 1;
+            }
+            if ($current_page > 1) {
+                $data['previous'] = $paginator - 1;
+            }
+            $activitiess = ActivityResource::collection($activities);
+            $data['activities'] = $activitiess;
+
+
+            return $this->apiResponse($data, 'Done', Response::HTTP_OK);
+        }
+    }
+        
 
     // if($activitiess->isEmpty()){
     // return $this->apiResponse(null,'No Activities Found',Response::HTTP_NOT_FOUND);
     // }
-    return $this->apiResponse($data,'Done',Response::HTTP_OK);
-    }
+   
+    
 
     /**
     * Store a newly created resource in storage.
