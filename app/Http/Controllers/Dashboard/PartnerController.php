@@ -78,6 +78,7 @@ class PartnerController extends Controller
      */
     public function update(PartnerRequest $request, Partner $partner)
     {
+        
         $data = $request->except("logo");
         if ($request->hasFile("logo")) {
             $file = $request->file("logo"); //return uploadedfile object

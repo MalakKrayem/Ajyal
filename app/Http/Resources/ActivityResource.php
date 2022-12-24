@@ -22,7 +22,7 @@ class ActivityResource extends JsonResource
             'activity_type_id' => $this->activity_type_id,
             'title' => $this->title,
             'description' => $this->description,
-            'image' => $this->image_url,
+            'image' => asset($this->image_url),
             'date' => $this->date,
 
         ];

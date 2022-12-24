@@ -22,30 +22,37 @@ class GroupController extends Controller
      */
     public function index(Request $request)
     {
-        $groups = Group::paginate(1);
+
+        if ($request->headers->get('Authorization')) {
+            $groups = GroupResource::collection(Group::get());
+            return $this->apiResponse($groups, 200);
+        } else {
+            $groups = Group::paginate(15);
 
 
-        $has_more_page = $groups->hasMorePages();
-        $data['has_more_page'] = $has_more_page;
+            $has_more_page = $groups->hasMorePages();
+            $data['has_more_page'] = $has_more_page;
 
-        $current_page = $groups->currentPage();
-        $data['current_page'] = $current_page;
+            $current_page = $groups->currentPage();
+            $data['current_page'] = $current_page;
 
-        $paginator = $groups->currentPage();
+            $paginator = $groups->currentPage();
 
-        if ($groups->hasMorePages()) {
+            if ($groups->hasMorePages()) {
 
-            $data['next'] = $paginator + 1;
+                $data['next'] = $paginator + 1;
+            }
+            if ($current_page > 1) {
+                $data['previous'] = $paginator - 1;
+            }
+
+            $groupss = GroupResource::collection($groups);
+            $data['groups'] = $groupss;
+
+            return $this->apiResponse($data, 'Done', 200);
         }
-        if ($current_page > 1) {
-            $data['previous'] = $paginator - 1;
-        }
-        
-        $groupss = GroupResource::collection($groups);
-        $data['groups'] = $groupss;
-
-        return $this->apiResponse($data, 'Done', 200);
-    }
+    
+}
 
     public function store(GroupRequest $request)
     {

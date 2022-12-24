@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LandingPageResource extends JsonResource
+class NotificationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,7 +15,9 @@ class LandingPageResource extends JsonResource
     public function toArray($request)
     {
         return [
-            $this->key => $this->data_shape,
+            'data' => json_decode($this->data),
+            'msg'=>"Has enrolled to you group"
+       
         ];
     }
 }

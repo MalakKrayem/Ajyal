@@ -21,21 +21,23 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
 
-        
-        $projects = Project::filter($request->query())
-        ->orderBy('projects.title')->paginate(2);
+
+        // $projects = Project::filter($request->query())
+        // ->orderBy('projects.title')->get();
 
 
-        $has_more_page=$projects->hasMorePages();
-        $data['has_more_page'] = $has_more_page;
-        
-        $projectsr=ProjectResource::collection($projects);
-        $data['projectsr']=$projectsr;
+        // $has_more_page=$projects->hasMorePages();
+        // $data['has_more_page'] = $has_more_page;
+
+        // $projectsr=ProjectResource::collection($projects);
+        // $data['projectsr']=$projectsr;
+        $projects = ProjectResource::collection(Project::filter($request->query())->orderBy('projects.title')->get());
+
         
         if($projects->isEmpty()){
             return $this->apiResponse(null, 'No projects found', 404);
         }
-        return $this->apiResponse($data,'Done',200);
+        return $this->apiResponse($projects,'Done',200);
     }
 
 
@@ -117,7 +119,7 @@ class ProjectController extends Controller
             $project->image = $data["image_path"];
         }
         
-        $project->save($data);
+        $project->update($data);
         
         //To add new many partner
         if ($request->partner_id) {
@@ -126,7 +128,7 @@ class ProjectController extends Controller
                 $data['project_id'] = $project->id;
                 $data['partner_id'] = $partner;
 
-                $projectPartner = ProjectPartner::create($data);
+                $projectPartner = ProjectPartner::UpdateOrcreate($data);
             }
         }
 
